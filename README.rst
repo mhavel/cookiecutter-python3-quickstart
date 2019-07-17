@@ -14,7 +14,7 @@ Python 3 Quick-start Project Template
 .. _Packaging a Python library: http://blog.ionelmc.ro/2014/05/25/python-packaging
 
 
-This is a `Cookiecutter`_ template for quickly creating a Python project.
+This is a `Cookiecutter`_ template for quickly creating a Python 3 project.
 
 The project layout is based on the `Python Packaging User Guide`_. The current
 conventional wisdom forgoes the use of a source directory, but moving the
@@ -42,16 +42,16 @@ Application Features
 
 .. _YAML: http://pyyaml.org/wiki/PyYAML
 
-- CLI with subcommands
-- Logging
-- Hierarchical `YAML`_ configuration
+- package's tools (information, data resources / files, importer, config)
+- useful python 3 utilities (strings, namespaces, augmented dict, decorators, patching, downloads, mapping)
+- optional hug Rest API with Jinja2 HTML templates
 
 
 =====
 Usage
 =====
 
-.. _GitHub: https://github.com/mhavel/cookiecutter-python-quickstart
+.. _GitHub: https://github.com/mhavel/cookiecutter-python3-quickstart
 
 
 Install Python requirements for using the template:
