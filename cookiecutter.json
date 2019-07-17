@@ -1,0 +1,13 @@
+{
+    "project_slug": "myapp",
+    "app_name": "{{ cookiecutter.project_slug|lower|replace(' ', '-') }}",
+    "cli_script": "{{ cookiecutter.app_name|replace('-', '') }}",
+    "author_name": "unknown",
+    "author_email": "",
+    "keywords": "",
+    "project_date": "{% now 'utc', '%a, %d %b %Y' %}",
+    "project_version": "0.1.0",
+    "project_url": "",
+    "sphinx_theme": "alabaster",
+    "_extensions": ["jinja2_time.TimeExtension"]
+}

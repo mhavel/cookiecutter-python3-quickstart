@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="UNE DESCRIPTION DE VOTRE SITE">
+    <title>API - HOME PAGE TITLE</title>
+
+    <style>
+        .pure-u-0 {
+            width: 0;
+        }
+        @media (min-width: 35.5em) {.pure-u-sm-0 {width: 0!important;}}
+        @media (min-width: 48em) {.pure-u-md-0 {width: 0!important;}}
+        @media (min-width: 64em) {.pure-u-lg-0 {width: 0!important;}}
+        @media (min-width: 80em) {.pure-u-xl-0 {width: 0!important;}}
+    </style>
+    <link rel="stylesheet"
+          href="https://unpkg.com/purecss@1.0.1/build/pure-min.css"
+          integrity="sha384-oAOxQR6DkCoMliIh8yFnu25d7Eq/PHS21PClpwjOTeU2jRSq11vu66rf90/cZr47"
+          crossorigin="anonymous">
+
+
+    <!--[if lte IE 8]>
+        <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.1/build/grids-responsive-old-ie-min.css">
+    <![endif]-->
+    <!--[if gt IE 8]><!-->
+        <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.1/build/grids-responsive-min.css">
+    <!--<![endif]-->
+
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
+
+    <link rel="stylesheet" href="/static/styles.css">
+    <!--[if lt IE 9]>
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.min.js"></script>
+    <![endif]-->
+
+    {% block js_head %}{% endblock js_head %}
+</head>
+<body>
+<div class="header">
+    <div class="home-menu pure-menu pure-menu-horizontal pure-menu-fixed">
+        <a class="pure-menu-heading" href="/">Nom de votre Site Web</a>
+
+        <ul class="pure-menu-list">
+            <li class="pure-menu-item pure-menu-selected"><a href="https://codedutravail-dev.num.social.gouv.fr/" class="pure-menu-link">
+                Un lien
+            </a></li>
+        </ul>
+    </div>
+</div>
+<div class="content-wrapper">
+    <div class="content">
+{%  block content %}{% endblock content %}
+    </div>
+</div>
+
+{% block js_end %}{% endblock js_end %}
+</body>
+</html>

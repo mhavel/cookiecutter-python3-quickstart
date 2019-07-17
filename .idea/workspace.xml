@@ -1,0 +1,457 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="fb4b6f70-0149-413a-892e-a4cead90c50f" name="Default Changelist" comment="" />
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileColors">
+    <fileColor scope="Non-Project Files (Material Default)" color="2E3C43" />
+    <fileColor scope="Non-Project Files (Material Darker)" color="323232" />
+    <fileColor scope="Non-Project Files (Material Lighter)" color="eae8e8" />
+    <fileColor scope="Non-Project Files (Material Palenight)" color="2f2e43" />
+    <fileColor scope="Non-Project Files (Material Oceanic)" color="2E3C43" />
+  </component>
+  <component name="FileEditorManager">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/{{cookiecutter.project_slug}}/setup.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="448">
+              <caret line="87" column="29" lean-forward="true" selection-start-line="87" selection-start-column="29" selection-end-line="87" selection-end-column="29" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/README.rst">
+          <provider selected="true" editor-type-id="restructured-text-editor" />
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+        <option value="Python 3 new UTF-8 file" />
+      </list>
+    </option>
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/{{cookiecutter.project_slug}}/VERSION" />
+        <option value="$PROJECT_DIR$/{{cookiecutter.project_slug}}/DATE" />
+        <option value="$PROJECT_DIR$/{{cookiecutter.project_slug}}/src/{{cookiercutter.app_name}}/utils/mapping.py" />
+        <option value="$PROJECT_DIR$/{{cookiecutter.project_slug}}/src/{{cookiercutter.app_name}}/utils/augmented.py" />
+        <option value="$PROJECT_DIR$/{{cookiecutter.project_slug}}/src/{{cookiercutter.app_name}}/__init__.py" />
+        <option value="$PROJECT_DIR$/{{cookiecutter.project_slug}}/src/{{cookiercutter.app_name}}/pkg/__init__.py" />
+        <option value="$PROJECT_DIR$/{{cookiecutter.project_slug}}/src/{{cookiercutter.app_name}}/pkg/info.py" />
+        <option value="$PROJECT_DIR$/{{cookiecutter.project_slug}}/src/{{cookiercutter.app_name}}/pkg/importer.py" />
+        <option value="$PROJECT_DIR$/{{cookiecutter.project_slug}}/src/{{cookiercutter.app_name}}/pkg/data.py" />
+        <option value="$PROJECT_DIR$/{{cookiecutter.project_slug}}/src/{{cookiercutter.app_name}}/utils/strings.py" />
+        <option value="$PROJECT_DIR$/cookiecutter.json" />
+        <option value="$PROJECT_DIR$/{{cookiecutter.project_slug}}/src/{{cookiecutter.app_name}}/pkg/info.py" />
+        <option value="$PROJECT_DIR$/{{cookiecutter.project_slug}}/{{cookiecutter.app_name}}/pkg/__init__.py" />
+        <option value="$PROJECT_DIR$/{{cookiecutter.project_slug}}/{{cookiecutter.app_name}}/pkg/info.py" />
+        <option value="$PROJECT_DIR$/{{cookiecutter.project_slug}}/{{cookiecutter.app_name}}/api/rest.py" />
+        <option value="$PROJECT_DIR$/{{cookiecutter.project_slug}}/{{cookiecutter.app_name}}/utils/augmented.py" />
+        <option value="$PROJECT_DIR$/{{cookiecutter.project_slug}}/{{cookiecutter.app_name}}/utils/downloads.py" />
+        <option value="$PROJECT_DIR$/{{cookiecutter.project_slug}}/requirements.txt" />
+        <option value="$PROJECT_DIR$/{{cookiecutter.project_slug}}/{{cookiecutter.app_name}}/utils/strings.py" />
+        <option value="$PROJECT_DIR$/{{cookiecutter.project_slug}}/MANIFEST.in" />
+        <option value="$PROJECT_DIR$/{{cookiecutter.project_slug}}/{{cookiecutter.app_name}}/api/templates/default.jinja2" />
+        <option value="$PROJECT_DIR$/{{cookiecutter.project_slug}}/{{cookiecutter.app_name}}/api/v1/app.py" />
+        <option value="$PROJECT_DIR$/{{cookiecutter.project_slug}}/{{cookiecutter.app_name}}/api/app.py" />
+        <option value="$PROJECT_DIR$/{{cookiecutter.project_slug}}/{{cookiecutter.app_name}}/api/html.py" />
+        <option value="$PROJECT_DIR$/{{cookiecutter.project_slug}}/{{cookiecutter.app_name}}/api/static.py" />
+        <option value="$PROJECT_DIR$/{{cookiecutter.project_slug}}/{{cookiecutter.app_name}}/api/wsgi.py" />
+        <option value="$PROJECT_DIR$/{{cookiecutter.project_slug}}/setup.py" />
+        <option value="$PROJECT_DIR$/{{cookiecutter.project_slug}}/{{cookiecutter.app_name}}/pkg/data.py" />
+        <option value="$PROJECT_DIR$/{{cookiecutter.project_slug}}/{{cookiecutter.app_name}}/api/static/styles.css" />
+        <option value="$PROJECT_DIR$/{{cookiecutter.project_slug}}/{{cookiecutter.app_name}}/pkg/config.py" />
+        <option value="$PROJECT_DIR$/README.rst" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectFrameBounds">
+    <option name="x" value="52" />
+    <option name="y" value="23" />
+    <option name="width" value="1708" />
+    <option name="height" value="1057" />
+  </component>
+  <component name="ProjectView">
+    <navigator proportions="" version="1">
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="cookiecutter-python3-quickstart" type="b2602c69:ProjectViewProjectNode" />
+              <item name="cookiecutter-python3-quickstart" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="cookiecutter-python3-quickstart" type="b2602c69:ProjectViewProjectNode" />
+              <item name="cookiecutter-python3-quickstart" type="462c0819:PsiDirectoryNode" />
+              <item name="{{cookiecutter.project_slug}}" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="cookiecutter-python3-quickstart" type="b2602c69:ProjectViewProjectNode" />
+              <item name="cookiecutter-python3-quickstart" type="462c0819:PsiDirectoryNode" />
+              <item name="{{cookiecutter.project_slug}}" type="462c0819:PsiDirectoryNode" />
+              <item name="{{cookiecutter.app_name}}" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+      <pane id="Scope" />
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/{{cookiecutter.project_slug}}/{{cookiecutter.app_name}}/api" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.path.for.package.tslint" value="project" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
+    <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
+    <property name="nodejs_npm_path_reset_for_default_project" value="true" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/{{cookiecutter.project_slug}}" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/{{cookiecutter.project_slug}}/{{cookiecutter.app_name}}/api" />
+      <recent name="$PROJECT_DIR$/{{cookiecutter.project_slug}}/{{cookiecutter.app_name}}" />
+      <recent name="$PROJECT_DIR$/{{cookiecutter.project_slug}}/{{cookiecutter.app_name}}/utils" />
+    </key>
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="fb4b6f70-0149-413a-892e-a4cead90c50f" name="Default Changelist" comment="" />
+      <created>1557579696673</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1557579696673</updated>
+      <workItem from="1557579702704" duration="19693000" />
+      <workItem from="1557741037796" duration="5134000" />
+      <workItem from="1557876870056" duration="77000" />
+      <workItem from="1557945905121" duration="22000" />
+      <workItem from="1558428171316" duration="771000" />
+      <workItem from="1558460263462" duration="717000" />
+      <workItem from="1559759993809" duration="631000" />
+      <workItem from="1560502130380" duration="6000" />
+      <workItem from="1562759476974" duration="3002000" />
+      <workItem from="1563109236972" duration="2031000" />
+      <workItem from="1563111289572" duration="1610000" />
+      <workItem from="1563115390992" duration="11006000" />
+      <workItem from="1563371685947" duration="4157000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TimeTrackingManager">
+    <option name="totallyTimeSpent" value="48857000" />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="52" y="23" width="1708" height="1057" extended-state="0" />
+    <editor active="true" />
+    <layout>
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49937266" visible="true" weight="0.16686675" />
+      <window_info id="Structure" order="1" sideWeight="0.50062734" side_tool="true" weight="0.28436318" />
+      <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" />
+      <window_info anchor="bottom" id="Run" order="2" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Version Control" order="8" />
+      <window_info anchor="bottom" id="Database Changes" order="9" />
+      <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" weight="0.32998747" />
+      <window_info anchor="bottom" id="Terminal" order="11" />
+      <window_info anchor="bottom" id="Python Console" order="12" />
+      <window_info anchor="right" id="Commander" order="0" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="right" id="SciView" order="3" />
+      <window_info anchor="right" id="Database" order="4" />
+    </layout>
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$USER_HOME$/Downloads/cookiecutter-python-app-master/{{cookiecutter.project_slug}}/src/{{cookiecutter.app_name}}/core/config.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="987">
+          <caret line="50" column="14" lean-forward="true" selection-start-line="19" selection-start-column="4" selection-end-line="50" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/{{cookiecutter.project_slug}}/src/{{cookiercutter.app_name}}/importer.py" />
+    <entry file="file://$PROJECT_DIR$/{{cookiecutter.project_slug}}/{{cookiecutter.app_name}}/utils/mapping.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="332">
+          <caret line="104" column="35" lean-forward="true" selection-start-line="104" selection-start-column="35" selection-end-line="104" selection-end-column="35" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Downloads/cookiecutter-python-app-master/{{cookiecutter.project_slug}}/setup.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="555">
+          <caret line="52" lean-forward="true" selection-start-line="52" selection-end-line="52" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/{{cookiecutter.project_slug}}/DATE">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="31" selection-start-column="31" selection-end-column="31" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/{{cookiecutter.project_slug}}/VERSION">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="34" selection-start-column="34" selection-end-column="34" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/{{cookiecutter.project_slug}}/README.rst">
+      <provider selected="true" editor-type-id="restructured-text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cookiecutter.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="189">
+          <caret line="9" column="20" selection-start-line="9" selection-start-column="20" selection-end-line="9" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/{{cookiecutter.project_slug}}/__init__.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/{{cookiecutter.project_slug}}/{{cookiecutter.app_name}}/utils/__init__.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/{{cookiecutter.project_slug}}/{{cookiecutter.app_name}}/pkg/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="189">
+          <caret line="9" column="11" lean-forward="true" selection-start-line="9" selection-start-column="11" selection-end-line="9" selection-end-column="11" />
+          <folding>
+            <element signature="e#65#89#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/{{cookiecutter.project_slug}}/LICENSE">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../../machine-learning/ExploCode-2019/dev/expressions/expressions/expressions/api/rest.py" />
+    <entry file="file://$PROJECT_DIR$/{{cookiecutter.project_slug}}/{{cookiecutter.app_name}}/utils/patching.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/{{cookiecutter.project_slug}}/{{cookiecutter.app_name}}/utils/decorators.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/{{cookiecutter.project_slug}}/{{cookiecutter.app_name}}/utils/augmented.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="315">
+          <caret line="15" column="20" lean-forward="true" selection-start-line="15" selection-start-column="20" selection-end-line="15" selection-end-column="20" />
+          <folding>
+            <element signature="e#566#10365#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/{{cookiecutter.project_slug}}/{{cookiecutter.app_name}}/utils/downloads.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="198">
+          <caret line="49" column="8" selection-start-line="49" selection-start-column="8" selection-end-line="52" selection-end-column="56" />
+          <folding>
+            <element signature="e#89#93#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/{{cookiecutter.project_slug}}/{{cookiecutter.app_name}}/config.py" />
+    <entry file="file://$PROJECT_DIR$/{{cookiecutter.project_slug}}/MANIFEST.in">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="6" selection-start-column="6" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/{{cookiecutter.project_slug}}/{{cookiecutter.app_name}}/utils/strings.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1008">
+          <caret line="48" column="85" selection-start-line="48" selection-start-column="85" selection-end-line="48" selection-end-column="85" />
+          <folding>
+            <element signature="e#63#81#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/{{cookiecutter.project_slug}}/{{cookiecutter.app_name}}/api/templates/default.jinja2">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="945">
+          <caret line="45" column="40" lean-forward="true" selection-start-line="45" selection-start-column="40" selection-end-line="45" selection-end-column="40" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/{{cookiecutter.project_slug}}/{{cookiecutter.app_name}}/api/v1/__init__.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/{{cookiecutter.project_slug}}/{{cookiecutter.app_name}}/api/__init__.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/{{cookiecutter.project_slug}}/{{cookiecutter.app_name}}/api/html.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="84">
+          <caret line="4" column="28" selection-start-line="4" selection-start-column="28" selection-end-line="4" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/{{cookiecutter.project_slug}}/{{cookiecutter.app_name}}/api/static.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="84">
+          <caret line="4" column="18" selection-start-line="4" selection-start-column="18" selection-end-line="4" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/{{cookiecutter.project_slug}}/{{cookiecutter.app_name}}/api/wsgi.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="42">
+          <caret line="2" lean-forward="true" selection-start-line="2" selection-end-line="2" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/{{cookiecutter.project_slug}}/{{cookiecutter.app_name}}/api/app.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="210">
+          <caret line="10" lean-forward="true" selection-start-line="10" selection-end-line="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/{{cookiecutter.project_slug}}/{{cookiecutter.app_name}}/api/v1/app.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="168">
+          <caret line="8" selection-start-line="8" selection-end-line="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/requirements.txt">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/{{cookiecutter.project_slug}}/requirements.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="105">
+          <caret line="5" column="8" selection-start-line="5" selection-start-column="8" selection-end-line="5" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/{{cookiecutter.project_slug}}/{{cookiecutter.app_name}}/api/static/styles.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-4592">
+          <caret line="48" selection-start-line="48" selection-end-line="48" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/{{cookiecutter.project_slug}}/{{cookiecutter.app_name}}/pkg/config.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="231">
+          <caret line="11" column="47" selection-start-line="11" selection-start-column="47" selection-end-line="11" selection-end-column="47" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/{{cookiecutter.project_slug}}/{{cookiecutter.app_name}}/pkg/data.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1379">
+          <caret line="40" column="22" selection-start-line="40" selection-start-column="22" selection-end-line="40" selection-end-column="22" />
+          <folding>
+            <element signature="e#81#124#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/{{cookiecutter.project_slug}}/{{cookiecutter.app_name}}/pkg/importer.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="315">
+          <caret line="15" column="9" lean-forward="true" selection-start-line="15" selection-start-column="9" selection-end-line="15" selection-end-column="9" />
+          <folding>
+            <element signature="e#104#139#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/{{cookiecutter.project_slug}}/{{cookiecutter.app_name}}/pkg/info.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="491">
+          <caret line="28" lean-forward="true" selection-start-line="28" selection-end-line="28" />
+          <folding>
+            <element signature="e#50#82#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/{{cookiecutter.project_slug}}/{{cookiecutter.app_name}}/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="252">
+          <caret line="12" lean-forward="true" selection-start-line="12" selection-end-line="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/{{cookiecutter.project_slug}}/setup.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="448">
+          <caret line="87" column="29" lean-forward="true" selection-start-line="87" selection-start-column="29" selection-end-line="87" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/README.rst">
+      <provider selected="true" editor-type-id="restructured-text-editor" />
+    </entry>
+  </component>
+  <component name="masterDetails">
+    <states>
+      <state key="MarkdownNavigator.LinkMap.UI">
+        <settings>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+    </states>
+  </component>
+</project>
