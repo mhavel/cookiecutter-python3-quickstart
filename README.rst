@@ -1,9 +1,9 @@
 ###################################
-Python Quick-start Project Template
+Python 3 Quick-start Project Template
 ###################################
 
-.. _travis: https://travis-ci.org/mhavel/cookiecutter-python-quickstart
-.. |travis.png| image:: https://travis-ci.org/mhavel/cookiecutter-python-quickstart.png
+.. _travis: https://travis-ci.org/mhavel/cookiecutter-python3-quickstart
+.. |travis.png| image:: https://travis-ci.org/mhavel/cookiecutter-python3-quickstart.png
    :alt: Travis CI build status
    :target: `travis`_
 
