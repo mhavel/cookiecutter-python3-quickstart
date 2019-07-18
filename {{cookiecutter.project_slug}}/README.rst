@@ -10,6 +10,9 @@ Minimum Requirements
 ====================
 
 - Python 3.6
+- srsly
+- requests
+- PyYAML >=3.11
 
 
 Optional Requirements
