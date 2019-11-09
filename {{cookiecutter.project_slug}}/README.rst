@@ -3,7 +3,7 @@
 {{ cookiecutter.app_name }}
 {{ delim }}
 
-This is the {{ cookiecutter.app_name }} application.
+This is the `{{ cookiecutter.app_name }}` application.
 
 
 Minimum Requirements

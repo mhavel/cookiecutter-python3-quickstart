@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# {{ cookiecutter.app_name }} documentation build configuration file.
+# `{{ cookiecutter.app_name }}` documentation build configuration file.
 #
 # This file is execfile()d with the current directory set to its
 # containing dir.

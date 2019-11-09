@@ -34,7 +34,7 @@ setup(
     # https://packaging.python.org/en/latest/single_source_version.html
     version=version,
 
-    description='',
+    description='description of `{{ cookiecutter.app_name }}`',
     long_description=None,
 
     # The project's main homepage.
@@ -95,7 +95,7 @@ setup(
 
     install_requires=['requests', 'srsly', 'PyYAML>=3.11'],
 
-    # to install: pip install {{cookiecutter.app_name}}[api]
+    # to install: pip install "{{cookiecutter.app_name}}[api]"
     extras_require={
         'api': ['hug', 'jinja2', 'cchardet', 'gunicorn[tornado]'],
     },

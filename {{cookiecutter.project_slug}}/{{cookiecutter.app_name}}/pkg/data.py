@@ -43,12 +43,14 @@ def read_data_file(path, as_bytes=None, encoding='utf-8', loader=None, on_missin
             raise FileNotFoundError(f'package data file {p} not readable or does not exit')
         else:
             if callable(on_missing):
-                return on_missing
+                return on_missing()
             elif isinstance(on_missing, (str, bytes)):
                 if loader is not None:
                     return loader(on_missing)
                 else:
                     return on_missing
+            else:
+                return on_missing
     if as_bytes is None:
         sl = p.suffix.lower()
         as_bytes = sl not in _TEXT_EXT

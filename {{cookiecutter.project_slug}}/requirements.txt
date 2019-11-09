@@ -1,4 +1,4 @@
-## Python requirements for using the ays application.
+## Python requirements for using the `{{ cookiecutter.app_name }}` application.
 ##
 ##   pyhon -m pip install --requirement=requirements.txt
 ##

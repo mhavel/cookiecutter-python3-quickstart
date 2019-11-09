@@ -45,20 +45,22 @@ class PkgConfig:
 
     This file may not exist.
     """
+    main_config_file = 'config.yml'
+
     def __init__(self, path=None):
         if path is None:
-            path = Path.cwd() / '{{cookiecutter.app_name}}_config.yml'
+            path = Path.cwd() / self.main_config_file
             if path.is_file():
                 self.path = self._get_path(path)
             else:
-                self.path = get_data_file('{{cookiecutter.app_name}}_config.yml')
+                self.path = get_data_file(self.main_config_file)
         else:
             self.path = self._get_path(path)
 
         self.data = None
         self.default_paths = ['.']
         self.default_download_path = '.'
-        self.load(on_missing=b'{}')
+        self.load(on_missing=dict)
 
     def __repr__(self):
         return f'{self.__class__.__name__}("{self.path}")'
@@ -104,7 +106,11 @@ class PkgConfig:
             path = self.path
         else:
             path = self._get_path(path)
-        data = yaml.load(read_data_file(path, as_bytes=True, on_missing=on_missing), Loader=YamlLoader)
+        _dat = read_data_file(path, as_bytes=True, on_missing=on_missing)
+        if isinstance(_dat, bytes):
+            data = yaml.load(_dat, Loader=YamlLoader)
+        else:
+            data = _dat
         if self.data is None:
             self.data = data
         elif update:
@@ -112,6 +118,28 @@ class PkgConfig:
         else:
             self.data = data
         self.path = path
+
+    def add(self, path=None, data=None, key=None, extend_list=True):
+        if path is not None:
+            self.load(path, update=True)
+        elif key is not None:
+            k = self.data.get(key, None)
+            if isinstance(k, dict):
+                k.update(data)
+            elif isinstance(k, list):
+                if isinstance(data, (list, tuple, set)) and extend_list:
+                    k.extend(data)
+                else:
+                    k.append(data)
+            else:
+                if key not in self.data:
+                    self.data[key] = data
+                else:
+                    raise ValueError(f'"{key}" key already exists in config but is neither a dict or a list')
+        else:
+            if not isinstance(data, dict):
+                raise TypeError('`data` must be a dict or you should provide the `key` argument')
+            self.data.update(data)
 
     def update(self, **kwargs):
         self.data.update(kwargs)

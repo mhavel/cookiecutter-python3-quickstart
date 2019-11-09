@@ -58,7 +58,7 @@ def download(url, dest=None, name=None, only_binary=True, max_size=None, overwri
             if dest.exists():
                 if dest.is_dir():
                     dest /= filename
-                elif not overwrite:
+                if dest.existst() and not overwrite:
                     raise FileExistsError(f'{dest} already exists: use the `overwrite` argument to download the file'
                                           f' again and overwrite the local copy')
             elif not dest.suffix:
