@@ -9,20 +9,7 @@ from pathlib import Path
 import shutil
 
 from . import PKG_NAME, PKG_DATA_ROOT
-
-
-_TEXT_EXT = (
-    '.txt',
-    '.json',
-    '.jsonl',
-    '.csv',
-    '.yml',
-    '.yaml',
-    '.js',
-    '.html',
-    '.css',
-    '.md'
-)
+from .readers import read_file, _TEXT_EXT, interpret_file
 
 
 # =======================================
@@ -31,38 +18,18 @@ _TEXT_EXT = (
 # typically defined by 'data_files' and/or MANIFEST.in in setuptools
 def get_data_file(path):
     """return the Path instance of the desired data file"""
-    # if not path.startswith('share/{{cookiecutter.app_name}}'):
-    #     path = 'share/{{cookiecutter.app_name}}/' + path
-    return PKG_DATA_ROOT / path
+    # if not path.startswith('share/octocode'):
+    #     path = 'share/octocode/' + path
+    p = Path(path).expanduser().resolve()
+    if not p.as_posix().startswith(PKG_DATA_ROOT.as_posix()):
+        return PKG_DATA_ROOT / path
+    else:
+        return p
 
 
 def read_data_file(path, as_bytes=None, encoding='utf-8', loader=None, on_missing=None):
     p = get_data_file(path)
-    if not p.is_file():
-        if on_missing is None:
-            raise FileNotFoundError(f'package data file {p} not readable or does not exit')
-        else:
-            if callable(on_missing):
-                return on_missing()
-            elif isinstance(on_missing, (str, bytes)):
-                if loader is not None:
-                    return loader(on_missing)
-                else:
-                    return on_missing
-            else:
-                return on_missing
-    if as_bytes is None:
-        sl = p.suffix.lower()
-        as_bytes = sl not in _TEXT_EXT
-    if as_bytes:
-        dat = p.read_bytes()
-    else:
-        dat = p.read_text(encoding=encoding)
-
-    if loader is not None:
-        return loader(dat)
-    else:
-        return dat
+    return read_file(p)
 
 
 def copy_data_file(path, dest, pattern='*'):
@@ -115,6 +82,11 @@ def read_resource(path, as_bytes=None, encoding='utf-8'):
         return p.read_bytes()
     else:
         return p.read_text(encoding=encoding)
+
+
+def interpret_resource(path, encoding='utf-8'):
+    p = get_resource(path)
+    return interpret_file(p, encoding=encoding)
 
 
 def copy_resource(path, dest, pattern='*'):

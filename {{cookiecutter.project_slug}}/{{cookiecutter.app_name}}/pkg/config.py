@@ -6,33 +6,14 @@ Tools to deal with configuration files, in the YAML format
 """
 
 from pathlib import Path
-import srsly
-import yaml
 
-from .data import read_data_file, get_data_file
+from . import params
+from .data import get_data_file
+from .readers import interpret_file, read_file, read_yaml
 from ..utils.downloads import download
 
 
-__all__ = ['read_file', 'config']
-
-
-# YAML C loader only available when libyaml is installed
-YamlLoader = getattr(yaml, 'CLoader', yaml.Loader)
-
-
-def read_file(path, encoding='utf-8'):
-    path = Path(path).expanduser().resolve()
-    s = path.suffix.lower()
-    if s == '.json':
-        return srsly.read_json(path)
-    elif s == '.jsonl':
-        return srsly.read_jsonl(path)
-    elif s in ('.yml', '.yaml'):
-        return yaml.load(path.read_bytes(), Loader=YamlLoader)
-    elif s in ('.pkl', '.bin', '.pickle'):
-        return srsly.pickle_loads(path.read_text(encoding=encoding))
-    else:
-        return path.read_text(encoding=encoding)
+__all__ = ['config']
 
 
 class PkgConfig:
@@ -41,26 +22,32 @@ class PkgConfig:
 
     That file can in-turn contains information to locate and eventually read other configuration files.
     These extra config files (and the way to find it) are listed in the package's main configuration file:
-        {{ cookiecutter.app_name }}_config.yml
+        config.yml
 
     This file may not exist.
     """
-    main_config_file = 'config.yml'
+    main_config_file = params.DEFAULT_CONFIG_FILE
 
     def __init__(self, path=None):
         if path is None:
-            path = Path.cwd() / self.main_config_file
+            path = Path(self.main_config_file).expanduser().absolute()
             if path.is_file():
                 self.path = self._get_path(path)
             else:
-                self.path = get_data_file(self.main_config_file)
+                # try package's embedded config file, if any
+                path = get_data_file(self.main_config_file)
+                if path.is_file():
+                    # make sure it conforms to expectations
+                    self.path = self._get_path(path)
+                else:
+                    self.path = None
         else:
             self.path = self._get_path(path)
 
-        self.data = None
+        self.data = params.BASE_CONFIG
         self.default_paths = ['.']
         self.default_download_path = '.'
-        self.load(on_missing=dict)
+        self.load(self.path, update=True)
 
     def __repr__(self):
         return f'{self.__class__.__name__}("{self.path}")'
@@ -86,7 +73,7 @@ class PkgConfig:
     @staticmethod
     def _get_path(path):
         path = Path(path).expanduser().resolve()
-        assert path.is_file(), f'{path} is not readable or does not exists'
+        assert path.is_file(), f'{path} is not readable or does not exist'
         assert path.suffix.lower() in ('.yml', '.yaml'), f'{path} is not a YAML file (extension must be .yml or .yaml)'
         return path
 
@@ -99,16 +86,22 @@ class PkgConfig:
     def set_default_download_location(self, path: (str, Path)):
         self.default_download_path = path
 
-    def load(self, path=None, update=False, on_missing=None):
+    def load(self, path=None, update=False):
         if path is None:
             if self.data is not None:
+                # no path, but data already defined: leave it
                 return
-            path = self.path
+            path = self.path    # might be None still
         else:
             path = self._get_path(path)
-        _dat = read_data_file(path, as_bytes=True, on_missing=on_missing)
+
+        if path is None:
+            # nothing to read: use `on_missing`
+            _dat = {}
+        else:
+            _dat = read_file(path, as_bytes=True, on_missing=dict)
         if isinstance(_dat, bytes):
-            data = yaml.load(_dat, Loader=YamlLoader)
+            data = read_yaml(_dat)
         else:
             data = _dat
         if self.data is None:
@@ -117,6 +110,7 @@ class PkgConfig:
             self.data.update(data)
         else:
             self.data = data
+        # self.path might be None, and self.data should be a dict
         self.path = path
 
     def add(self, path=None, data=None, key=None, extend_list=True):
@@ -146,6 +140,8 @@ class PkgConfig:
 
     def is_file(self, name):
         x = self.data[name]
+        if not hasattr(x, 'get'):
+            return False
         is_file = x.get('is_file', None)
         if is_file is None:
             if set(x).difference({'name', 'url', 'paths', '_path', 'is_file', 'download_dest'}):
@@ -191,23 +187,28 @@ class PkgConfig:
         else:
             return x['_path']
 
-    def get(self, name, try_default_paths=False, dest_path=None):
-        if self.is_file(name):
-            return self.get_path(name, try_default_paths=try_default_paths, dest_path=dest_path)
-        # else return the data of that key, whatever it is
-        return self.data[name]
+    def get(self, name, default=None, try_default_paths=False, dest_path=None):
+        try:
+            if self.is_file(name):
+                return self.get_path(name, try_default_paths=try_default_paths, dest_path=dest_path)
+            # else return the data of that key, whatever it is
+            return self.data[name]
+        except KeyError:
+            return default
 
     def read(self, name, try_default_paths=False, encoding='utf-8'):
         path = self.get_path(name, try_default_paths=try_default_paths)
-        return read_file(path, encoding=encoding)
+        return interpret_file(path, encoding=encoding)
 
 
 config = PkgConfig()
-# config.data.setdefault('stopwords', {'_path': get_resource('pkg/data/stopwords.yml')})  # an example to include package's file within the configuration if needed
+
+# an example to include package's file within the configuration if needed
+# config.data.setdefault('stopwords', {'_path': get_resource('pkg/data/stopwords.yml')})
 
 
-def get(name, try_default_paths=False, dest_path=None):
-    return config.get(name, try_default_paths=try_default_paths, dest_path=dest_path)
+def get(name, default=None, try_default_paths=False, dest_path=None):
+    return config.get(name, default=default, try_default_paths=try_default_paths, dest_path=dest_path)
 
 
 def get_path(name, try_default_paths=False, dest_path=None):

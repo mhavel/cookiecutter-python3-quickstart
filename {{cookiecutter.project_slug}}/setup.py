@@ -98,5 +98,6 @@ setup(
     # to install: pip install "{{cookiecutter.app_name}}[api]"
     extras_require={
         'api': ['hug', 'jinja2', 'cchardet', 'gunicorn[tornado]'],
+        'cli': ['plac']
     },
 )

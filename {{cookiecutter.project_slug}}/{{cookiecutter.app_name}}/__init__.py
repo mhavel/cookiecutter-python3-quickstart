@@ -12,16 +12,22 @@ from .pkg import PKG_NAME, PKG_ROOT
 from .pkg.info import *
 
 
-# ================
-#  Package config
-# ================
-from .pkg.config import *
-
-
 # ==============
 #  Package data
 # ==============
 from .pkg.data import *
+
+
+# ================
+#  Package config
+# ================
+# if you need to tune some of the parameters, uncomment the lines below, before importing `.pkg.config`
+# from .pkg import params
+# from .pkg.data import interpret_resource
+# params.DEFAULT_CONFIG_FILE = 'my_config.yml'
+# params.BASE_CONFIG = interpret_resource('pkg/data/stopwords.yml')
+
+from .pkg.config import *
 
 
 # ==================
