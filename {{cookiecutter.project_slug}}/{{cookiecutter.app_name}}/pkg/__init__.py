@@ -19,7 +19,7 @@ if (PKG_ROOT.parent / 'setup.py').is_file():
     PKG_DATA_ROOT = PKG_ROOT.parent
 elif str(PKG_ROOT).startswith(sys.prefix):
     # >> default (package installed under sys.prefix)
-    PKG_DATA_ROOT = Path(sys.prefix)
+    PKG_DATA_ROOT = Path(sys.prefix) / f'share/{PKG_NAME}'
 else:
     # >> user
     PKG_DATA_ROOT = Path(site.USER_BASE) / f'share/{PKG_NAME}'
