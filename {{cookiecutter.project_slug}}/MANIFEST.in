@@ -3,5 +3,5 @@ global-exclude *.py[cod] __pycache__ *.so
 include VERSION
 include DATE
 include LICENSE
-recursive-include {{cookiecutter.project_slug}}/api/templates/ *
-resursive-include {{cookiecutter.project_slug}}/api/static/ *
+recursive-include {{cookiecutter.app_name}}/api/templates/ *
+resursive-include {{cookiecutter.app_name}}/api/static/ *
