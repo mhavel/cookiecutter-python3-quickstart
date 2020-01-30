@@ -76,7 +76,7 @@ Create a running environment:
 .. code-block:: console
 
     $ mkdir run && cd run
-    $ CODEROOT=$(python -c 'import {{cookiecutter.project_slug}};print({{cookiecutter.project_slug}}.pkg_info["root"])')
+    $ CODEROOT=$(python -c 'import {{cookiecutter.app_name}};print({{cookiecutter.app_name}}.pkg_info["root"])')
     $ ln -s $CODEROOT/api/wsgi.py .
  
 Start the `gunicorn` server:
