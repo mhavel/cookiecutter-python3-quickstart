@@ -54,3 +54,35 @@ Build documentation:
 .. code-block:: console
 
     $ sphinx-build -b html doc doc/_build/html
+
+
+Serving API / HTML
+==================
+
+Install the required packages:
+
+.. code-block:: console
+    
+    $ pip install tornado cchardet gunicorn
+ 
+Install your code:
+
+.. code-block:: console
+
+    $ pip install /path/to/your/code
+    
+Create a running environment:
+
+.. code-block:: console
+
+    $ mkdir run && cd run
+    $ CODEROOT=$(python -c 'import {{cookiecutter.project_slug}};print({{cookiecutter.project_slug}}.pkg_info["root"])')
+    $ ln -s $CODEROOT/api/wsgi.py .
+ 
+Start the `gunicorn` server:
+
+.. code-block:: console
+
+    $ IP=127.0.0.1
+    $ PORT=8000
+    $ gunicorn -w 4 -b $IP:$PORT wsgi:server
