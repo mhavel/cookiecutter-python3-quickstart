@@ -50,7 +50,10 @@ class PkgConfig:
         self.load(self.path, update=True)
 
     def __repr__(self):
-        return f'{self.__class__.__name__}("{self.path}")'
+        if self.path is not None:
+            return f'{self.__class__.__name__}("{self.path}")'
+        else:
+            return f'{self.__class__.__name__}()'
 
     def __str__(self):
         return str(self.data)
