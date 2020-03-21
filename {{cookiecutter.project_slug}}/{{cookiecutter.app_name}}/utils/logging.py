@@ -182,7 +182,7 @@ class LoggingContext:
             else:
                 filters = [_ if isinstance(_, logging.Filter) or callable(_) else logging.Filter(_) for _ in filters]
         self.filters = filters
-        self.close = close
+        self._close = close
 
         self.old_levels = [{'logger': _l.level, 'handlers': [_.level for _ in _l.handlers]} for _l in loggers]
 
@@ -219,7 +219,7 @@ class LoggingContext:
     def __exit__(self, et, ev, tb):
         filters = self.filters
         handlers = self.handlers
-        close = self.close
+        close = self._close
         for logger, old_level in zip(self.loggers, self.old_levels):
 
             if filters is not None:
