@@ -42,7 +42,7 @@ def get_logger(name: str, filename: str=None, console: bool=True, **kwargs):
     Returns:
         logger (logging.Logger): the logger
     """
-    logger = logging.getLogger(name)
+    logger = logging.getLogger(name.format(pkg=PKG_NAME_))
 
     if logger.hasHandlers():
         # do not add new handlers if already some defined
