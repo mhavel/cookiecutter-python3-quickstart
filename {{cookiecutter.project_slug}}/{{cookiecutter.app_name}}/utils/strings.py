@@ -8,6 +8,7 @@ Strings tools
 import unicodedata
 import re
 from string import ascii_lowercase
+import hashlib
 
 
 STOPWORDS = ['à', 'de', 'des', 'la', 'le', 'les', 'un', 'une', 'mes', 'ma', 'mon',
@@ -48,3 +49,16 @@ def normalize(*args, remove_accents=True, decapitalize=True, lowercase=False, st
 def u2ascii(s, encoding='utf-8'):
     return unicodedata.normalize('NFD', s).encode('ascii', 'ignore').decode(encoding)
 
+
+def hash_str(x: (str, bytes), algo=None) -> str:
+    """Compute the hash sum of the given string / bytes ; default algorithm is Sha1"""
+    if algo is None:
+        algo = hashlib.sha1
+    elif isinstance(algo, str):
+        algo = getattr(hashlib, algo)
+    else:
+        assert callable(algo), f'`algo` must be a hashlib algorithm name or a callable'
+
+    if isinstance(x, str):
+        x = x.encode('utf-8')
+    return algo(x).hexdigest()
