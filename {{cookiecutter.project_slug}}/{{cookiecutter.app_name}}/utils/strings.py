@@ -50,7 +50,7 @@ def u2ascii(s, encoding='utf-8'):
     return unicodedata.normalize('NFD', s).encode('ascii', 'ignore').decode(encoding)
 
 
-def hash_str(x: (str, bytes), algo=None) -> str:
+def hashsum_str(x: (str, bytes), algo=None) -> str:
     """Compute the hash sum of the given string / bytes ; default algorithm is Sha1"""
     if algo is None:
         algo = hashlib.sha1
