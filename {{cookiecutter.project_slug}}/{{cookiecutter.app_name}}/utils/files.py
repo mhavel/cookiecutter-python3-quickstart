@@ -9,7 +9,7 @@ import hashlib
 from functools import partial
 
 
-def hash_file(path: (str, Path), algo=None, chunk_kb=128) -> str:
+def hashsum_file(path: (str, Path), algo=None, chunk_kb=128) -> str:
     """Compute the hash sum of a file, ready in chunks ; default algorithm is Sha1, and chunk size is 128 kB"""
     path = Path(path).expanduser().resolve()
     assert path.is_file(), f'path {path} is not a file'
