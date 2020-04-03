@@ -88,14 +88,13 @@ setup(
     # pip to create the appropriate form of executable for the target platform.
     # entry_points={
     #     'console_scripts': [
-    #         'emails2qa = emails2qa.scripts.emails2qa:cli',
-    #         'emails2qa_convert = emails2qa.scripts.emails2qa:cli_convert'
+    #         'cmd_name = path.to.module:function_name',
     #     ],
     # },
 
     install_requires=['requests', 'srsly', 'PyYAML>=3.11'],
 
-    # to install: pip install "{{cookiecutter.app_name}}[api]"
+    # to install: pip install "{{cookiecutter.app_name}}"
     extras_require={
         'api': ['hug', 'jinja2', 'cchardet', 'gunicorn[tornado]'],
         'cli': ['plac']
