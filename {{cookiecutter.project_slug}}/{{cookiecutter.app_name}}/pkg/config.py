@@ -198,6 +198,14 @@ class PkgConfig:
             return self.data[name]
         except KeyError:
             return default
+        
+    def value(self, key, **kw):
+        try:
+            return self.data[key]
+        except KeyError:
+            if 'default' in kw:
+                return kw['default']
+            raise
 
     def read(self, name, try_default_paths=False, encoding='utf-8'):
         path = self.get_path(name, try_default_paths=try_default_paths)
