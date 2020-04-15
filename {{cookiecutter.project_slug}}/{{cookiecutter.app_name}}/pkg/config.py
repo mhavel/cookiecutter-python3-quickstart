@@ -207,6 +207,9 @@ class PkgConfig:
                 return kw['default']
             raise
 
+    def __getitem__(self, item):
+        return self.data[item]
+            
     def read(self, name, try_default_paths=False, encoding='utf-8'):
         path = self.get_path(name, try_default_paths=try_default_paths)
         return interpret_file(path, encoding=encoding)
