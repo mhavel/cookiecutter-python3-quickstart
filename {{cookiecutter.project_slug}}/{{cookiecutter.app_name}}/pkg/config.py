@@ -48,6 +48,7 @@ class PkgConfig:
         self.default_paths = ['.']
         self.default_download_path = '.'
         self.load(self.path, update=True)
+        self._files = {}
 
     def __repr__(self):
         if self.path is not None:
@@ -57,6 +58,9 @@ class PkgConfig:
 
     def __str__(self):
         return str(self.data)
+    
+    def __contains__(self, item):
+        return item in self.data
 
     def help_format(self):
         print(
@@ -145,12 +149,12 @@ class PkgConfig:
         x = self.data[name]
         if not hasattr(x, 'get'):
             return False
-        is_file = x.get('is_file', None)
+        is_file = x.get('is_file', self._files.get(name, None))
         if is_file is None:
             if set(x).difference({'name', 'url', 'paths', '_path', 'is_file', 'download_dest'}):
-                x['is_file'] = is_file = False
+                self._files[name] = is_file = False
             else:
-                x['is_file'] = is_file = True
+                self._files[name] = is_file = True
         return is_file
 
     def get_path(self, name, try_default_paths=False, dest_path=None):
