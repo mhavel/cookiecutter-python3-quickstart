@@ -5,12 +5,6 @@
 JSON tools
 """
 
-# coding=utf-8
-
-"""
-Some JSON serialization tools
-"""
-
 # import numpy as np
 # import pandas as pd
 import json
