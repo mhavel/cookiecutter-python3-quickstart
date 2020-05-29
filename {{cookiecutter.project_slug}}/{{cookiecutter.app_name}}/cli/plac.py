@@ -90,3 +90,116 @@ def plac_call(obj, arglist=None, eager=True, version=None):
     else:
         return plac.call(obj, arglist=arglist, eager=eager, version=version)
 
+ 
+class PlacCommand:
+    def __init__(self, func: callable, annotations: dict, strict: bool=True, wrap: (bool, callable)=False, name: str=None, desc: str=None):
+        self.func = func
+        self.annotations = ann = self.make_annotations(annotations)
+        if strict:
+            self.plac_func = plac.annotations(**ann)(func)
+        else:
+            self.plac_func = plac_annotations(wrap, **ann)(func)
+
+        if name is None:
+            name = func.__name__
+        self.name = name
+
+        if desc is None:
+            if func.__doc__ is not None and func.__doc__:
+                desc = func.__doc__
+            else:
+                desc = f'command `{name}` (no description)'
+        self.desc = desc
+        self.plac_func.__doc__ = desc
+
+    @staticmethod
+    def ann(*a, **kw):
+        """Return a plac.Annotation instance"""
+        return plac.Annotation(*a, **kw)
+
+    @staticmethod
+    def make_annotations(ann: dict):
+        r = {}
+        for k, v in ann.items():
+            if isinstance(v, dict):
+                r[k] = plac.Annotation(**v)
+            elif isinstance(v, (tuple, list)):
+                r[k] = plac.Annotation(*v)
+            else:
+                r[k] = v
+        return r
+
+    def call(self, arglist=None, eager=True, version=None):
+        if arglist is None:
+            arglist = sys.argv[1:]
+        return plac_call(self.plac_func, arglist=arglist, eager=eager, version=version)
+
+    __call__ = call
+
+
+class PlacSubCommandUnknownError(Exception):
+    pass
+
+
+class PlacMasterCommand:
+    """
+    A master command to manage subcommands
+    """
+    def __init__(self, name: str, *commands, desc: str=None, default: str=None):
+        assert all((isinstance(c, PlacCommand) for c in commands)), 'command must be a PlacCommand instance'
+        self.commands = {c.name: c for c in commands}
+        self.name = name
+        self.default = default
+        self.desc = desc or f'this is `{name}` master program.' 
+
+    def __missing__(self, name: str):
+        cmds = ', '.join(self.commands)
+        return f'command "{name}" is not valid. List of available commands: {cmds}'
+
+    def help(self, arglist=None, eager=True, version=None):
+        cmds = self.commands
+        if 'help' in cmds:
+            return cmds['help'](arglist=arglist, eager=eager, version=version)
+        else:
+            s = [self.desc, '', 'available commands:']
+            for name, c in cmds.items():
+                _ = f'{name} '
+                s.append(f'   {_:.<30s} {c.desc}')
+            s.append('')
+            s.append(f'To get specific help of particular subcommand, just type: `{self.name} help {{subcommand}}`')
+            print('\n'.join(s))
+
+    def help_subcommand(self, cmd: str, eager=True, version=None):
+        return self.commands[cmd](arglist=['-h'], eager=eager, version=version)
+
+    def run_subcommand(self, cmd: str, **kwargs):
+        try:
+            return self.commands[cmd](**kwargs)
+        except KeyError:
+            raise PlacSubCommandUnknownError(self.__missing__(cmd))
+
+    def run_default(self, **kw):
+        if self.default is None:
+            return self.help(**kw)
+        else:
+            return self.commands[self.default](**kw)
+
+    def call(self, arglist=None, eager=True, version=None):
+        if arglist is None:
+            arglist = sys.argv[1:]
+        if len(arglist) == 0:
+            return self.run_default(arglist=[], eager=eager, version=version)
+        elif len(arglist) == 1:
+            c = arglist[0]
+            if c in ('-h', '--help', 'help'):
+                return self.help(arglist=[])
+            else:
+                return self.run_subcommand(c, arglist=[], eager=eager, version=version)
+        else:
+            c0 = arglist[0]
+            if c0 == 'help':
+                return self.help_subcommand(arglist[1], eager=eager, version=version)
+            else:
+                return self.run_subcommand(c0, arglist=arglist[1:], eager=eager, version=version)
+
+    __call__ = call
