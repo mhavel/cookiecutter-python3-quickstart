@@ -10,7 +10,7 @@
     "project_url": "",
     "sphinx_theme": "alabaster",
     "_extensions": ["jinja2_time.TimeExtension"],
-    "_copy_without_render": [
+    "__copy_without_render": [
         "*/cli/plac.py"
     ]
 }
