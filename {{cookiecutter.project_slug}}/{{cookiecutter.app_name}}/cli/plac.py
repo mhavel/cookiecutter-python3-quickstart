@@ -166,7 +166,7 @@ class PlacMasterCommand:
                 _ = f'{name} '
                 s.append(f'   {_:.<30s} {c.desc}')
             s.append('')
-            s.append(f'To get specific help of particular subcommand, just type: `{self.name} help {{subcommand}}`')
+            s.append(f'To get specific help of particular subcommand, just type: `{self.name} help {{ "{{" }}subcommand{{ "}}" }}`')
             print('\n'.join(s))
 
     def help_subcommand(self, cmd: str, eager=True, version=None):
