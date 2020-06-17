@@ -22,6 +22,15 @@ if PTYPE is None:
     PTYPE = type(re.compile(r'a'))
 
 
+def absolute_path(path: Path, root: Path=None):
+    p = path.expanduser()
+    if root is None:
+        p = p.resolve()
+    elif not p.is_absolute():
+        p = root / p
+    return p
+    
+    
 def rooted_path(path: Path, root: Path, base: Path = None):
     if root is None:
         if base is None:
