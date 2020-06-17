@@ -8,6 +8,6 @@ Parameters intended to be used / modified by the end-user (so that there should 
 Modify these parameters in your package's root `__init__.py` file, before loading `pkg.config`
 """
 
-DEFAULT_CONFIG_FILE = 'config.yml'
+DEFAULT_CONFIG_FILE = '{{cookiecutter.app_name}}.yml'
 BASE_CONFIG = None
 
