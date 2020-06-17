@@ -23,8 +23,8 @@ from .pkg.data import *
 # ================
 # if you need to tune some of the parameters, uncomment the lines below, before importing `.pkg.config`
 # from .pkg import params
+# params.DEFAULT_CONFIG_FILE = '{{cookiecutter.app_name}}.yml'
 # from .pkg.data import interpret_resource
-# params.DEFAULT_CONFIG_FILE = 'my_config.yml'
 # params.BASE_CONFIG = interpret_resource('pkg/data/stopwords.yml')
 
 from .pkg.config import *
