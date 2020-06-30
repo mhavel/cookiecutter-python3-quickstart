@@ -169,6 +169,16 @@ class AugmentedDict(dict):
         else:
             self[key] = value
         return
+                               
+    def __contains__(self, key):
+        if '.' in key:
+            try:
+                self.get_from_path(key, raise_error=True)
+                return True
+            except KeyError:
+                return False
+        else:
+            return super().__contains__(key)
 
     def get_from_path(self, e, default=None, sep='.', raise_error=False):
         """
