@@ -50,6 +50,11 @@ class PkgConfig:
         self.load(self.path, update=True)
         self._files = {}
 
+    def reload(self):
+        self.data = params.BASE_CONFIG
+        self.load(self.path, update=True)
+        self._files = {}
+        
     def __repr__(self):
         if self.path is not None:
             return f'{self.__class__.__name__}("{self.path}")'
