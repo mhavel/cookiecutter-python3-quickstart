@@ -46,7 +46,9 @@ def normalize(*args, remove_accents=True, decapitalize=True, lowercase=False, st
         return args
 
 
-def u2ascii(s, encoding='utf-8'):
+def u2ascii(s, encoding='utf-8', mapping: dict=None):
+    if mapping is not None:
+        s = s.translate(str.maketrans(mapping))
     return unicodedata.normalize('NFD', s).encode('ascii', 'ignore').decode(encoding)
 
 
