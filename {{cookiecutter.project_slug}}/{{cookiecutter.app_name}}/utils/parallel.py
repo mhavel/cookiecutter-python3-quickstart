@@ -9,7 +9,6 @@ from multiprocessing import cpu_count
 import contextlib
 import joblib
 
-
 from .progress import tqdm, HAS_TQDM
 
 
@@ -21,6 +20,20 @@ def get_njobs(n: int=None, default_setaside: int=2):
     return max(1, n)
 
 
+class ParallelEnvironment:
+    def __init__(self, func: callable):
+        self.func = func
+        self._prepared = False
+
+    def prepare_env(self):
+        pass
+
+    def __call__(self, x, *args, **kwargs):
+        if not self._prepared:
+            self.prepare_env()
+            self._prepared = True
+        return self.func(x, *args, **kwargs)
+
 
 @contextlib.contextmanager
 def tqdm_joblib(iterable=None, **kw):
@@ -29,8 +42,8 @@ def tqdm_joblib(iterable=None, **kw):
     Usage:
         >>> with tqdm_joblib(total=200) as pbar:
         >>>     Parallel(n_jobs=2)(delayed(func)(args) for i in range(200))
-        
-    Source: https://stackoverflow.com/a/58936697
+    
+    source: https://stackoverflow.com/a/58936697
     """
     pbar = tqdm(iterable, **kw)
 
