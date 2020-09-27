@@ -6,7 +6,8 @@ YAML tools
 
 # -- try ruamel
 try:
-    from ruamel.yaml import YAML as yaml
+    # from ruamel.yaml import YAML as yaml
+    from ruamel import yaml
     yaml_lib = 'ruamel'
 
 # -- PyYaml
