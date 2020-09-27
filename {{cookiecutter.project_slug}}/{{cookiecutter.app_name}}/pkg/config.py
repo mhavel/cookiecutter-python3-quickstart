@@ -169,9 +169,6 @@ class PkgConfig:
         """Reload the config, loosing any change / expansion / replacement you've made, and re-reading files"""
         self._files = {}
         self._load_init(encoding=encoding or self.encoding)
-        # self.data = params.BASE_CONFIG
-        # self.load(self.path, update=True)
-        # self._files = {}
         
     def expand(self, path: (str, Path), deep=False, encoding='utf-8', deep_handlers=None):
         """Expand / update config with another config file"""
