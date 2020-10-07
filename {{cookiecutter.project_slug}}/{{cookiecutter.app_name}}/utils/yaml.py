@@ -9,6 +9,11 @@ try:
     # from ruamel.yaml import YAML as yaml
     from ruamel import yaml
     yaml_lib = 'ruamel'
+    try:
+        # prefer C libs
+        from ruamel.yaml import CLoader as Loader, CDumper as Dumper
+    except ImportError:
+        from ruamel.yaml import Loader, Dumper
 
 # -- PyYaml
 except ImportError:
@@ -21,8 +26,8 @@ except ImportError:
         from yaml import Loader, Dumper
 
 
-def load_ruamel(s):
-    return yaml.load(s)
+def load_ruamel(s, version=None):
+    return yaml.load(s, Loader=Loader, version=version)
 
 
 def safe_load_ruamel(s):
@@ -30,7 +35,7 @@ def safe_load_ruamel(s):
 
 
 def dump_ruamel(x, indent=2, default_flow_style=False, explicit_start=False, explicit_end=False):
-    return yaml.dump(x, default_flow_style=default_flow_style, explicit_start=explicit_start, indent=indent, explicit_end=explicit_end)
+    return yaml.dump(x, default_flow_style=default_flow_style, explicit_start=explicit_start, indent=indent, explicit_end=explicit_end, Dumper=Dumper)
 
 
 def load_pyyaml(s):
