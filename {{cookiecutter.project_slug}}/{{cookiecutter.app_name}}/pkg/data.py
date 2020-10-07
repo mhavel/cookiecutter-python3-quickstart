@@ -84,9 +84,9 @@ def read_resource(path, as_bytes=None, encoding='utf-8'):
         return p.read_text(encoding=encoding)
 
 
-def interpret_resource(path, encoding='utf-8'):
+def interpret_resource(path, encoding='utf-8', readers: dict=None):
     p = get_resource(path)
-    return interpret_file(p, encoding=encoding)
+    return interpret_file(p, encoding=encoding, readers=readers)
 
 
 def copy_resource(path, dest, pattern='*'):
