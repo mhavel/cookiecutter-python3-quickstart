@@ -88,6 +88,9 @@ def interpret_file(path, encoding='utf-8', readers: dict=None):
     s = path.suffix.lower()
     if readers is None:
         readers = {}
+    elif not isinstance(readers, dict):
+        assert callable(readers)
+        readers = {s: readers}
     if s in readers:
         func = readers[s]
         assert callable(func)
