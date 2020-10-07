@@ -34,8 +34,13 @@ def safe_load_ruamel(s):
     return yaml.safe_load(s)
 
 
-def dump_ruamel(x, indent=2, default_flow_style=False, explicit_start=False, explicit_end=False):
-    return yaml.dump(x, default_flow_style=default_flow_style, explicit_start=explicit_start, indent=indent, explicit_end=explicit_end, Dumper=Dumper)
+# def dump_ruamel(x, indent=2, default_flow_style=False, explicit_start=False, explicit_end=False):
+#     return yaml.dump(x, default_flow_style=default_flow_style, explicit_start=explicit_start, indent=indent, explicit_end=explicit_end, Dumper=Dumper)
+
+def dump_ruamel(x, indent=2, default_flow_style=False, explicit_start=False, explicit_end=False, allow_unicode=True, encoding='utf-8',
+    version=None):
+    return yaml.dump(x, default_flow_style=default_flow_style, explicit_start=explicit_start,
+        indent=indent, explicit_end=explicit_end, Dumper=Dumper, allow_unicode=allow_unicode, encoding=encoding, version=None)
 
 
 def load_pyyaml(s):
