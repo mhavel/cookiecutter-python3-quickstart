@@ -17,7 +17,7 @@ from ..utils.mapping import dict_deep_update
 from ..utils import json, yaml
 
 
-__all__ = ['config']
+__all__ = ['config', 'ConfigValue', 'PkgConfig']
 
 
 class ConfigFileError(Exception):
@@ -99,6 +99,9 @@ class PkgConfig:
         # first load
         self._load_init(encoding=encoding)
 
+        # status
+        self._updated = False
+
     @staticmethod
     def validate_config_file(path: (str, Path), must_exists: bool=True):
         path = Path(path).expanduser().resolve()
@@ -169,6 +172,7 @@ class PkgConfig:
         """Reload the config, loosing any change / expansion / replacement you've made, and re-reading files"""
         self._files = {}
         self._load_init(encoding=encoding or self.encoding)
+        self._updated = True
         
     def expand(self, path: (str, Path), deep=False, encoding='utf-8', deep_handlers=None):
         """Expand / update config with another config file"""
@@ -177,6 +181,7 @@ class PkgConfig:
             dict_deep_update(self.data, data, handlers=deep_handlers)
         else:
             self.data.update(data)
+        self._updated = True
 
     def replace(self, path: (str, Path)=None, data: dict=None, encoding='utf-8'):
         """Replace current's config data with that from given file or dict"""
@@ -185,6 +190,7 @@ class PkgConfig:
             self.data = data
         else:
             self.data = self._read_config_file(path, encoding=encoding)
+        self._updated = True
 
     def __repr__(self):
         if self.path is not None:
@@ -205,11 +211,13 @@ class PkgConfig:
     # -- update (data) -- 
     def update(self, **kwargs):
         self.data.update(kwargs)
+        self._updated = True
 
     deep_update_handlers = {}
 
     def deep_update(self, _handlers=None, **kwargs):
         dict_deep_update(self.data, kwargs, handlers=_handlers or self.deep_update_handlers)
+        self._updated = True
 
     # -- sub-config files --
     def add_default_location(self, path: (str, Path), prepend=False):
@@ -298,6 +306,7 @@ class PkgConfig:
     # -- set --
     def __setitem__(self, item, value):
         self.data[item] = value
+        self._updated = True
 
     set = __setitem__
     
@@ -307,3 +316,62 @@ config = PkgConfig()
 
 # an example to include package's file within the configuration if needed
 # config.data.setdefault('stopwords', {'_path': get_resource('pkg/data/stopwords.yml')})
+
+
+class ConfigValue:
+    def __init__(self, node: str, *keys, default=None, setdefault: bool=False, postprocessor: callable=None):
+        self.node = node
+        self.keys = keys
+        self.default = default
+        self.setdefault = setdefault
+        self.postprocessor = postprocessor
+        self._cached = False
+        self._value = None
+
+    def _extract_from_config(self, **kw):
+        default = kw.get('default', self.default)
+        if self.keys:
+            x = config.get(self.node, default={})
+            for k in self.keys:
+                if k in x:
+                    x = x[k]
+                else:
+                    x = default
+                    break
+        else:
+            x = config.get(self.node, default=default)
+        if isinstance(x, dict) and self.setdefault:
+            x = dict(self.default, **x)
+
+        if self.postprocessor is not None:
+            x = self.postprocessor(x)
+        self._value = x
+        self._cached = True
+        return x
+
+    def _get_updated_value(self, **kw):
+        if config._updated or not self._cached:
+            return self._extract_from_config(**kw)
+        else:
+            return self._value
+
+    def get(self, key, *args, **kw):
+        x = self.value
+        assert isinstance(x, dict)
+        return x.get(key, *args, **kw)
+
+    def __getitem__(self, item):
+        x = self.value
+        return x[item]
+
+    def __contains__(self, item):
+        return item in self.value
+
+    def __call__(self, *args, **kwargs):
+        x = self.value
+        assert callable(x)
+        return x(*args, **kwargs)
+
+    @property
+    def value(self):
+        return self._get_updated_value()
