@@ -54,8 +54,10 @@ if yaml_lib == 'ruamel':
     load = load_ruamel
     dump = dump_ruamel
     safe_load = safe_load_ruamel
+    del load_pyyaml, safe_load_pyyaml, dump_pyyaml
 
 else:
     load = load_pyyaml
     dump = dump_pyyaml
     safe_load = safe_load_pyyaml
+    del load_ruamel, safe_load_ruamel, dump_ruamel
