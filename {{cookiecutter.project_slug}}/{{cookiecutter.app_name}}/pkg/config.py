@@ -190,13 +190,15 @@ class PkgConfig:
             self.data.update(data)
         self._updated = True
 
-    def replace(self, path: (str, Path)=None, data: dict=None, encoding='utf-8'):
+    def replace(self, path: (str, Path)=None, data: dict=None, encoding='utf-8', save_path: bool=False):
         """Replace current's config data with that from given file or dict"""
         if path is None:
             assert data is not None
             self.data = data
         else:
             self.data = self._read_config_file(path, encoding=encoding)
+            if save_path:
+                self.path = path
         self._updated = True
 
     def __repr__(self):
