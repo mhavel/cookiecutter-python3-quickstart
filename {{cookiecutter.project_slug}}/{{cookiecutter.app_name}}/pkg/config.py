@@ -102,6 +102,13 @@ class PkgConfig:
         # status
         self._updated = False
 
+    @property
+    def parent_path(self):
+        if self.path is not None:
+            return Path(self.path).expanduser().resolve().parent
+        else:
+            return None
+        
     @staticmethod
     def validate_config_file(path: (str, Path), must_exists: bool=True):
         path = Path(path).expanduser().resolve()
