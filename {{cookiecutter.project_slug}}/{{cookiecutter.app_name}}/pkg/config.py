@@ -162,7 +162,7 @@ class PkgConfig:
         if s == '.json':
             path.write_text(json.dumps(data), encoding=encoding)
         else:
-            path.write_text(yaml.dump(data), encoding=encoding)
+            path.write_bytes(yaml.dump(data))
         return path
 
     def save(self, path: (str, Path)=None, encoding='utf-8'):
