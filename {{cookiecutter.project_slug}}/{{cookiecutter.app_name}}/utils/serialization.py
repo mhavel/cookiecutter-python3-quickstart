@@ -31,3 +31,18 @@ def pickle_protocol(level):
         >>>     do_stuff()
     """
     return PickleProtocol(level)
+
+
+def safer_eval(e: str, env: dict=None):
+    """Evaluate given string expression, but in a more restricted context: no builtins,
+    no access to private methods / attributes and names.
+    
+    WARNING: this is not safe, and could pose a threat if the expression contains malicious code!
+    Use only on trusted / safe data
+    """
+    if '__' in e:
+        raise ValueError('`__` are not allowed in expression')
+    if '._' in e:
+        raise ValueError('access to private attribute / methods (`._`) is not allowed in expression')
+    g = {'__builtins__': {}}
+    return eval(e, g, env)
