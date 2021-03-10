@@ -5,6 +5,8 @@
 Augmented Python base-class, and utils
 """
 
+from copy import deepcopy
+
 from .mapping import dict_deep_update, dict_default, dict_get_first_of, KeyNotFound
 
 
@@ -180,6 +182,9 @@ class AugmentedDict(dict):
         else:
             return super().__contains__(key)
 
+    def deepcopy(self):
+        return self.__class__(deepcopy(self))
+                               
     def get_from_path(self, e, default=None, sep='.', raise_error=False):
         """
         Same as __call__, but one string argument is used to infer the keys path, separated by `sep` (default: .)
