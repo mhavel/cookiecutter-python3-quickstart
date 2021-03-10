@@ -16,7 +16,7 @@ from .mapping import dict_deep_update, dict_default, dict_get_first_of, KeyNotFo
 _AUGMENTED_DICT_SUPER_METHODS = {
     '__call__', '__dir__', '__repr__', 'get_from_path', 'set_from_path', 'get_first_of',
     'get_first_of_path', 'deep_update', 'pop_from_path', '__setstate__', '__getstate__',
-    'from_object', 'from_mapping', 'from_sequence', 'deep_get'
+    'from_object', 'from_mapping', 'from_sequence', 'deep_get', 'deepcopy'
 }
 _AUGMENTED_DICT_OBJECT_METHODS = {
 
