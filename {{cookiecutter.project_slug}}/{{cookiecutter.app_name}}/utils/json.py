@@ -62,5 +62,5 @@ def dumps(data, indent=2, ensure_ascii=False, cls=ExtendedJSONEncoder, **kw):
     return json.dumps(data, cls=cls, indent=indent, ensure_ascii=ensure_ascii, **kw)
 
 
-def loads(s, encoding=None, cls=None, **kw):
-    return json.loads(s, encoding=encoding, cls=cls, **kw)
+def loads(s, cls=None, **kw):
+    return json.loads(s, cls=cls, **kw)
