@@ -22,6 +22,19 @@ if PTYPE is None:
     PTYPE = type(re.compile(r'a'))
 
 
+
+def exists_and_newer(p1: Path, p2: Path, details: bool=False):
+    res = False, False
+    if p1.is_file():
+        if p1.stat().st_mtime < p2.stat().st_mtime:
+            res = True, False
+        else:
+            res = True, True
+    if not details:
+        res = operator.and_(*res)
+    return res
+
+    
 def absolute_path(path: Path, root: Path=None):
     p = path.expanduser()
     if root is None:
