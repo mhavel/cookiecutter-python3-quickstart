@@ -6,12 +6,10 @@ Tools to deal with configuration files, in the YAML format
 """
 
 from pathlib import Path
-from copy import deepcopy
-import operator
 
 from . import params
 from .data import get_data_file
-from .readers import interpret_file, read_file, read_yaml
+from .readers import interpret_file
 from ..utils.downloads import download
 from ..utils.mapping import dict_deep_update
 from ..utils import json, yaml
