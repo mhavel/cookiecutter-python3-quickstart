@@ -1,8 +1,11 @@
+
 # coding: utf-8
 
 """
 YAML tools
 """
+
+from pathlib import Path
 
 # -- try ruamel
 try:
@@ -52,7 +55,7 @@ def safe_load_pyyaml(s):
 
 
 def dump_pyyaml(x, indent=2, default_flow_style=False, explicit_start=False, explicit_end=False):
-    return yaml.dump(x, Dumper=Dumper, default_flow_style=default_flow_style, explicit_start=explicit_start, indent=indent, explicit_end=explicit_end)
+    return yaml.dump(x, Dumper=Dumper, default_flow_style=default_flow_style, explicit_start=explicit_start, indent=indent, explicit_end=explicit_end).encode()
 
 
 if yaml_lib == 'ruamel':
@@ -66,3 +69,16 @@ else:
     dump = dump_pyyaml
     safe_load = safe_load_pyyaml
     del load_ruamel, safe_load_ruamel, dump_ruamel
+
+
+def read(path, container=None):
+    path = Path(path)
+    data = load(path.read_text())
+    if container is not None:
+        data = container(data)
+    return data
+
+
+def write(x, path, **kw):
+    path = Path(path)
+    return path.write_bytes(dump(x, **kw))
