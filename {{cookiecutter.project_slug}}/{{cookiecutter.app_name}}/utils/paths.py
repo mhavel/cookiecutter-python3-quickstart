@@ -14,6 +14,7 @@ import uuid
 import re
 from fnmatch import fnmatch
 import operator
+from functools import reduce
 
 
 PTYPE = getattr(re, 'Pattern', getattr(re, '_pattern_type', None))  # Py 3.7 introduced the 'Pattern' type
@@ -22,19 +23,25 @@ if PTYPE is None:
     PTYPE = type(re.compile(r'a'))
 
 
-
-def exists_and_newer(p1: Path, p2: Path, details: bool=False):
-    res = False, False
+def exists_and_newer(p1: Path, p2: Path, *others, op_paths=operator.or_, details: bool=True):
+    res = [False, False]
     if p1.is_file():
-        if p1.stat().st_mtime < p2.stat().st_mtime:
-            res = True, False
-        else:
-            res = True, True
+        t1 = p1.stat().st_mtime
+        res[0] = True
+        res1 = []
+        for p in ((p2, ) + others):
+            if not p.is_file():
+                res1.append(False)
+            elif t1 < p.stat().st_mtime:
+                res1.append(False)
+            else:
+                res1.append(True)
+        res[1] = reduce(op_paths, res1[1:], res1[0])
     if not details:
         res = operator.and_(*res)
     return res
 
-    
+
 def absolute_path(path: Path, root: Path=None):
     p = path.expanduser()
     if root is None:
@@ -491,7 +498,7 @@ def with_name(path: Path, name: str, keep_extension: bool = True, ditch_extensio
 def safe_rename(path: (str, Path), name: (str, Path), keep_extension: bool = True, ditch_extension: bool = False,
                 ext: (int, str) = None, backup_ext: str = '.backup', versioned_format: str = '{backup_ext}.v{i}',
                 method: str = 'backup'):
-    """safely rename (move) a file / folder to one path to another, optionally backing-up existing destination.
+    """safely rename (move) a file / folder from one path to another, optionally backing-up existing destination.
 
     Args:
         path (str|Path): the source path
