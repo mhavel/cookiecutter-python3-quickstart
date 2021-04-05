@@ -6,6 +6,7 @@ Tools to manipulate data
 
 from collections import Counter
 from functools import partial
+from typing import Union
 import pandas as pd
 import numpy as np
 
@@ -48,7 +49,8 @@ dtypes_gb_agg = {
     'f': 'sum',
     'i': 'sum',
     'b': 'max',
-    'O': 'unique'
+    'O': 'unique',
+    'M': 'max'
 }
 
 
@@ -56,7 +58,6 @@ dtypes_gb_agg = {
 def unmelt(df: pd.DataFrame, on, value_cols, id_cols=None, new_cols=None, compress=False, filter_ids=None, agg=None, dtype_agg=None, **kw) -> pd.DataFrame:
     """
     Given a dataframe `df` of the form:
-
         x   A       B       C
         1   bar     1.2     NaN
         1   foo     2.3     1
@@ -64,16 +65,12 @@ def unmelt(df: pd.DataFrame, on, value_cols, id_cols=None, new_cols=None, compre
         2   bar     8.3     10.3
         2   foo     -3.3    0.4
         3   bar     0.34    -0.53
-
     "unmelting" `df` on 'A' for 'B' and 'C', id from 'x' will produce the following dataframe:
-
         x   B_bar   B_foo   B_baz   C_bar   C_foo   C_baz
         1   1.2     2.3     45.3    NaN     1       2
         2   8.3     -3.3    NaN     10.3    0.4     NaN
         3   0.34    NaN     NaN     -0.53   NaN     NaN
-
     ie. the dataframe values from `value_cols` are pivoted from being row-indexed to col-indexed
-
     Args:
         df          (DataFrame):                dataframe to unmelt
         on          (str):                      column to be unmelted (to do the pivot on)
@@ -100,10 +97,14 @@ def unmelt(df: pd.DataFrame, on, value_cols, id_cols=None, new_cols=None, compre
                                                 else, should be a dict mapping type kind (f, i, b, O) to a function (eg. np.sum) or None
                                                 TODO: this should never be needed! 
         **kw        (dict):                     options
-
+    
     Keyword Arguments:
         na_rep                 :    replacement for NaN values in created new features
         na_rep_all  (bool=True):    if True, replace original NaN too with `na_rep`
+        suffix_sep  (str='_')  :    the string to seperate the original column name with its `x` value (default: '_')
+        agg_new     (str=sum)  :    the default method to aggregate new columns
+        agg_num     (str=sum)  :    the default method to aggregate non-new numerical columns
+        agg_other   (str=max)  :    the default method to aggregate other (not new, not num) columns
     """
     xarr = df[on].unique()
 
@@ -121,8 +122,9 @@ def unmelt(df: pd.DataFrame, on, value_cols, id_cols=None, new_cols=None, compre
             xarr = list(filter_ids)
 
     # new column names generator: from an original column `col` and a value `x`, return new column name
+    _sep = kw.get('suffix_sep', '_')
     if new_cols is None:
-        get_name = '{col}_{x}'.format
+        get_name = (f'{{col}}{_sep}{{x}}').format
     elif isinstance(new_cols, str):
         def get_name(col, x):
             return new_cols.format(col=col, x=x)
@@ -132,7 +134,7 @@ def unmelt(df: pd.DataFrame, on, value_cols, id_cols=None, new_cols=None, compre
         assert isinstance(new_cols, dict)
         def get_name(col, x):
             _ = new_cols.get(x, x)
-            return f'{col}_{_}'
+            return f'{col}{_sep}{_}'
 
     # NaN management
     na_rep = repl_na = False
@@ -272,7 +274,7 @@ def partial_merge(df_left: pd.DataFrame, df_right: pd.DataFrame, on=None, left_o
 
 
 def merge_update(df_left: pd.DataFrame, df_right: pd.DataFrame, on=None, left_on=None, right_on=None,
-                 left_index=False, right_index=False, prefer='right'):
+                 left_index=False, right_index=False, prefer='right', adjust_dtypes=True):
     """
     Merge `df_right` with `df_left` in an update method:
         - distinct left/right columns are combined into the new dataframe
@@ -301,6 +303,9 @@ def merge_update(df_left: pd.DataFrame, df_right: pd.DataFrame, on=None, left_on
             m = ml.combine_first(mr).reset_index()
         else:
             m = mr.combine_first(ml).reset_index()
+
+    if adjust_dtypes:
+        m = m.infer_objects()
 
     return m
 
@@ -341,6 +346,14 @@ def smart_fillna(df: pd.DataFrame, na_reps: dict=None, inplace=False, downcast=N
     values = {c: x if not callable(x) else x(df[c]) for c, x in dt.items() if x is not None}
 
     return df.fillna(values, inplace=inplace, downcast=downcast)
+
+
+def auto_adjust_dtypes(df: pd.DataFrame, inplace=False):
+    if not inplace:
+        df = df.copy()
+    for c in list(df):
+        df.loc[:, c] = pd.Series(df[c].tolist(), index=df.index, name=c)
+    return df
 
 
 def map_values(s: pd.Series, mapping: dict, warn=True):
@@ -414,16 +427,66 @@ def unique_reducer(s=None):
     return reducer
 
 
-def gb_agg_dtypes(df: pd.DataFrame, on: (str, list), dtype_agg: dict=None, default_agg=None, agg: (dict, list)=None) -> pd.DataFrame:
+def unique_na_reducer(s=None):
+    if s is None:
+        def reducer(x: pd.Series):
+            u = x.unique()
+            n = u.size
+            if n == 1:
+                return u[0]
+            print(x.name)
+            print(u)
+            print(x.unique())
+            print(x.index)
+            assert False, f'{n} unique values for column "{x.name}": expected 1'
+    else:
+        u = s.unique()
+        n = u.size
+        if n == 1:
+            reducer = constant_reducer(u[0])
+        else:
+            assert False, f'{n} unique values for column "{s.name}": expected 1'
+    return reducer
+
+
+
+def preferred_or_most_common_reducer(preferred: list, s=None, warn=False):
+    if s is None:
+        def reducer(x: pd.Series):
+            y = x.loc[x.notnull()]
+            u = set(y.unique())
+            try:
+                # find the first preferred value, it in unique (else raise StopIteration)
+                v = next((x for x in preferred if x in u))
+            except StopIteration:
+                v = y.mode().values[0]
+                if warn and len(u) > 1:
+                    logger.warning(f'there are more than one non-NaNs unique values for column "{x.name}" ; using: {v}')
+            return v
+    else:
+        y = s.loc[s.notnull()]
+        u = set(y.unique())
+        try:
+            # find the first preferred value, it in unique (else raise StopIteration)
+            v = next((x for x in preferred if x in u))
+        except StopIteration:
+            v = y.mode().values[0]
+            if warn and len(u) > 1:
+                logger.warning(f'there are more than one non-NaNs unique values for column "{s.name}" ; using: {v}')
+        reducer = constant_reducer(v)
+    return reducer
+
+
+def gb_agg_dtypes(df: pd.DataFrame, on: (str, list), dtype_agg: dict=None, default_agg=None, agg: (dict, list)=None, preferred=None) -> pd.DataFrame:
     """
     Groupby `df` on `on`, and then aggregate the results and reset the index.
-
     This function is intended to aggregate easily based on data types. Four special agg strings can be used:
         - 'raise'               -> forbid to aggregate on this type / column (expect one value only)
         - 'unique'              -> force the array to have one unique non-NaN value, used as the aggregation value
         - 'most_common'         -> use the most common value (excluding NaNs)
         - 'most_common_warn'    -> same as above, but show warning when there is more than 1 unique values (excluding NaNs)
-
+        - 'preferred_or_most_common'  -> given a list preferred value, pick the first one in data, otherwise the most common
+        - 'preferred_or_most_common_warn'  -> given a list preferred value, pick the first one in data, otherwise the most common (with a warning if not unique)
     Args:
         df                          : the dataframe
         on                          : the column to groupby on
@@ -432,24 +495,38 @@ def gb_agg_dtypes(df: pd.DataFrame, on: (str, list), dtype_agg: dict=None, defau
                                       - type is not in `dtype_agg`
                                       - AND not in `agg` (if provided)
         agg         (dict|list)     : explicit column aggregation function ; if a list, `default_agg` must be given
+        preferred   (dict|list)     : preferred values, when `dtype_agg` = 'preferred_or_most_common'
     """
     if isinstance(on, str):
         on = [on]
     else:
         on = list(on)
 
+    if preferred is None:
+        preferred = {}
+    else:
+        if isinstance(preferred, (str, int, float, bool)):
+            preferred = [preferred]
+        if isinstance(preferred, list):
+            # same list for all types...
+            preferred = {t: preferred for t in 'fbiOM'}
+        else:
+            assert isinstance(preferred, dict)
+
     if isinstance(dtype_agg, str):
         if dtype_agg == 'default':
             dtype_agg = dtypes_gb_agg.copy()
+        elif dtype_agg.startswith('preferred_or_most_common'):
+            dtype_agg = {t: dtype_agg for t in 'fbiOM'}
         else:
-            dtype_agg = {t: dtype_agg for t in 'fibO'}
+            dtype_agg = {t: dtype_agg for t in 'fibOM'}
     elif callable(dtype_agg):
-        dtype_agg = {t: dtype_agg for t in 'fibO'}
+        dtype_agg = {t: dtype_agg for t in 'fibOM'}
     elif dtype_agg is None:
         if default_agg is None:
             dtype_agg = dtypes_gb_agg.copy()
         else:
-            dtype_agg = {t: default_agg for t in 'fibO'}
+            dtype_agg = {t: default_agg for t in 'fibOM'}
     else:
         assert isinstance(dtype_agg, dict)
         if default_agg is not None:
@@ -461,6 +538,8 @@ def gb_agg_dtypes(df: pd.DataFrame, on: (str, list), dtype_agg: dict=None, defau
         v = dtype_agg[t]
         if v == 'unique':
             dtype_agg[t] = unique_reducer()
+        elif v == 'unique_na':
+            dtype_agg[t] = unique_na_reducer()
         elif v == 'raise':
             dtype_agg[t] = forbidden_reducer(dtype=t)
         elif v == 'default':
@@ -469,6 +548,10 @@ def gb_agg_dtypes(df: pd.DataFrame, on: (str, list), dtype_agg: dict=None, defau
             dtype_agg[t] = most_common_reducer()
         elif v == 'most_common_warn':
             dtype_agg[t] = most_common_reducer(warn=True)
+        elif v == 'preferred_or_most_common':
+            dtype_agg[t] = preferred_or_most_common_reducer(preferred.get(t, ()))
+        elif v == 'preferred_or_most_common_warn':
+            dtype_agg[t] = preferred_or_most_common_reducer(preferred.get(t, ()), warn=True)
 
     if agg is None:
         agg = {}
@@ -480,18 +563,47 @@ def gb_agg_dtypes(df: pd.DataFrame, on: (str, list), dtype_agg: dict=None, defau
             v = agg[c]
             if v == 'unique':
                 agg[c] = unique_reducer(df[c])
+            elif v == 'unique_na':
+                agg[c] = unique_na_reducer(df[c])
             elif v == 'raise':
                 agg[c] = forbidden_reducer(col=c)
             elif v == 'most_common':
                 agg[c] = most_common_reducer(df[c])
             elif v == 'most_common_warn':
                 agg[c] = most_common_reducer(df[c], warn=True)
+            elif v == 'preferred_or_most_common':
+                agg[c] = preferred_or_most_common_reducer(preferred.get(c, ()), df[c])
+            elif v == 'preferred_or_most_common_warn':
+                agg[c] = preferred_or_most_common_reducer(preferred.get(c, ()), df[c], warn=True)
 
     for c in set(df).difference(on).difference(agg):
         k = df[c].dtype.kind
         agg[c] = dtype_agg[k]
 
     return df.groupby(on).agg(agg).reset_index()
+
+
+
+def add_transformed_cols(x: pd.DataFrame, on: Union[str, list], data: Union[dict, list], transform: Union[str, dict], adjust_dtype: bool=True):
+    """
+    Transform new data (but same index as x) and add the result to a dataframe
+    """
+    if isinstance(on, str):
+        on = [on]
+    y = x[on].copy()
+    if not isinstance(data, dict):
+        data = {c: x[c].values for c in data}
+    assert not set(data).intersection(y)
+    for col, values in data.items():
+        y.loc[:, col] = values
+    y = y.groupby(on).transform(transform)
+    if adjust_dtype:
+        for col in y:
+            x.loc[:, col] = pd.Series(y[col].tolist(), index=x.index, name=col)
+    else:
+        x = merge_update(x, y, on=on, prefer='right')
+    return x
+
 
 
 def count_unique(x: pd.Series):
