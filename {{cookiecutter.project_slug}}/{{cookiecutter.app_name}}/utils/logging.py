@@ -13,6 +13,8 @@ from logging import Logger
 
 PKG_NAME_ = Path(__file__).parent.parent.name
 
+LOGGERS = {}
+
 
 logging.captureWarnings(True)
 logging.addLevelName(25, 'PROGRESS')
@@ -74,6 +76,7 @@ def get_logger(name: str, filename: str=None, console: bool=True, **kwargs):
         # logger.addHandler(console)
         logger.addHandler(console_handler(**kwargs))
 
+    LOGGERS[logger.name] = logger
     return logger
 
 
@@ -112,12 +115,12 @@ def get_sub_logger(sub_name, filename=None, **kwargs):
     return get_logger(name, filename=filename, **kwargs)
 
 
-def set_level(x: Logger, glob=None, logger=None, handlers=None, handler_types: dict=None):
+def set_level(x: Logger=None, glob=None, logger=None, handlers=None, handler_types: dict=None):
     """
     Modify the logging level of `x`
 
     Args:
-        x (Logger): the logger
+        x (Logger=None): the logger ; if None, configure all known loggers defined using `get_logger` or `get_sub_logger`
         glob (str|int=None): the logging level for both the logger and the handlers
         logger (str|int=None): the logging level only for the logger
         handlers (str|int=None): the logging level for all the handlers
@@ -126,6 +129,11 @@ def set_level(x: Logger, glob=None, logger=None, handlers=None, handler_types: d
     Returns:
         x (Logger): the logger
     """
+    if x is None:
+        for x in LOGGERS.values():
+            set_level(x, glob=glob, logger=logger, handlers=handlers, handler_types=handler_types)
+            return
+
     if glob is not None:
         logger = handlers = glob
 
