@@ -64,3 +64,16 @@ def dumps(data, indent=2, ensure_ascii=False, cls=ExtendedJSONEncoder, **kw):
 
 def loads(s, cls=None, **kw):
     return json.loads(s, cls=cls, **kw)
+
+
+def read(path, container=None, **kw):
+    path = Path(path)
+    data = loads(path.read_text(), **kw)
+    if container is not None:
+        data = container(data)
+    return data
+
+
+def write(x, path, **kw):
+    path = Path(path)
+    return path.write_text(dumps(x, **kw))
