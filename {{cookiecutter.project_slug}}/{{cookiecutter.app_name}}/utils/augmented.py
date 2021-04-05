@@ -184,7 +184,9 @@ class AugmentedDict(dict):
 
     def deepcopy(self):
         return self.__class__(deepcopy(self))
-                               
+
+    copy_ = deepcopy
+
     def get_from_path(self, e, default=None, sep='.', raise_error=False):
         """
         Same as __call__, but one string argument is used to infer the keys path, separated by `sep` (default: .)
@@ -200,6 +202,8 @@ class AugmentedDict(dict):
         """
         assert isinstance(e, str), 'first argument must be a string representing the keys path'
         return self.__call__(*e.split(sep), default=default, raise_error=raise_error)
+
+    get_ = get_from_path
 
     def set_from_path(self, e, value, sep='.'):
         """
@@ -227,6 +231,8 @@ class AugmentedDict(dict):
 
         k = keys[-1]
         _v[k] = value
+
+    set_ = set_from_path
 
     def get_first_of(self, *args, return_key=False, **kwargs):
         """
@@ -291,6 +297,8 @@ class AugmentedDict(dict):
 
         self.update(d)
 
+    update_ = deep_update
+
     def pop_from_path(self, e, sep='.', **kwargs):
         """
         Same as `get_from_path`, but remove the key after retrieving its value
@@ -313,6 +321,8 @@ class AugmentedDict(dict):
         else:
             o['raise_error'] = True
         return self.__call__(*e.split(sep), **o)
+
+    pop_ = pop_from_path
 
     # ------------------
     # pickling
