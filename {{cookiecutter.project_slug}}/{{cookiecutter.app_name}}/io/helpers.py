@@ -23,7 +23,7 @@ def get_module(key: str):
         k = f'.{k}'
     found = False
     for m in (csv, hdf5, excel, json, yaml, pickle, joblib, parquet):
-        if k == m.VALID_EXTENSIONS:
+        if k in m.VALID_EXTENSIONS:
             found = True
             break
     if not found:
