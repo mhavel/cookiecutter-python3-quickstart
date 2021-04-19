@@ -13,7 +13,7 @@ from .common import EXT_COMP
 
 
 EXT_MODULES = {
-    'excel': excel,
+    '.excel': excel,
 }
 
 
