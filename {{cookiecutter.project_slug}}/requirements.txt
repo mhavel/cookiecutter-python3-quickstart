@@ -5,3 +5,5 @@
 PyYAML>=3.11
 requests
 srsly
+joblib
+pandas
