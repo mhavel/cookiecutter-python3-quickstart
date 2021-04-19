@@ -83,6 +83,8 @@ def path_and_skey(path: Union[str, Path]):
 def read(path: Union[str, Path], **kw):
     p, s = path_and_skey(path)
     m = get_module(s)
+    if p.is_file():
+        raise FileNotFoundError(p)
     return m.read(p, fix_suffix=False, **kw)
 
 
