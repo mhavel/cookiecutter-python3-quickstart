@@ -89,5 +89,7 @@ def read(path: Union[str, Path], **kw):
 def write(data, path: Union[str, Path], **kw):
     p, s = path_and_skey(path)
     m = get_module(s)
+    if not p.parent.is_dir():
+        p.parent.mkdir(parents=True)
     m.write(data, p, fix_suffix=False, **kw)
     return p
