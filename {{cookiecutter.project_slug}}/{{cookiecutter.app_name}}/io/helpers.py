@@ -13,7 +13,7 @@ from .common import EXT_COMP
 
 
 EXT_MODULES = {
-    '.excel': excel,
+    'excel': excel,
 }
 
 
@@ -27,6 +27,7 @@ def get_module(key: str):
             found = True
             break
     if not found:
+        k = key.lower()
         if k in EXT_MODULES:
             m = EXT_MODULES[k]
             found = True
