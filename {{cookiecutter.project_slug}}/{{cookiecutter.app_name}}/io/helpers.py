@@ -19,9 +19,11 @@ EXT_MODULES = {
 
 def get_module(key: str):
     k = key.lower()
+    if not k.startswith('.'):
+        k = f'.{k}'
     found = False
     for m in (csv, hdf5, excel, json, yaml, pickle, joblib, parquet):
-        if k == csv.VALID_EXTENSIONS:
+        if k == m.VALID_EXTENSIONS:
             found = True
             break
     if not found:
