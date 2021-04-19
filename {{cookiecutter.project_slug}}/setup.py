@@ -92,7 +92,7 @@ setup(
     #     ],
     # },
 
-    install_requires=['requests', 'srsly', 'PyYAML>=3.11'],
+    install_requires=['requests', 'srsly', 'PyYAML>=3.11', 'pandas', 'joblib'],
 
     # to install: pip install "{{cookiecutter.app_name}}"
     extras_require={
