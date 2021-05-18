@@ -6,6 +6,7 @@ Logging tools
 
 import os
 from pathlib import Path
+from typing import Union
 import logging
 import logging.handlers
 from logging import Logger
@@ -15,12 +16,22 @@ PKG_NAME_ = Path(__file__).parent.parent.name
 
 LOGGERS = {}
 
+_LLT = Union[str, int]
+_LLCT = Union[str, int, dict, tuple, list]
 
 logging.captureWarnings(True)
 logging.addLevelName(25, 'PROGRESS')
 
 
-def get_logger(name: str, filename: str=None, console: bool=True, **kwargs):
+def fork(loggers: dict):
+    """
+    Use this when using multiprocessing, to put registered loggers back in `LOGGERS`
+    """
+    if loggers:
+        LOGGERS.update(loggers)
+
+
+def get_logger(name: str, filename: str=None, console: bool=True, **kwargs) -> Logger:
     """
     Return a logger, with a number of handlers attached to it (file and/or console
 
@@ -81,8 +92,8 @@ def get_logger(name: str, filename: str=None, console: bool=True, **kwargs):
 
 
 def file_handler(filename: str, root: str=None, file_max_bytes: int=5e6, file_backup_count: int=5,
-                 file_level='DEBUG', file_formatter='%(asctime)s - %(name)-18s: %(levelname)-8s %(message)s',
-                 **kwargs):
+                 file_level: str='DEBUG', file_formatter='%(asctime)s - %(name)-18s: %(levelname)-8s %(message)s',
+                 **kwargs) -> logging.handlers.RotatingFileHandler:
     if root is None:
         root = os.getcwd()
     elif not os.path.isdir(root):
@@ -96,7 +107,7 @@ def file_handler(filename: str, root: str=None, file_max_bytes: int=5e6, file_ba
     return fh
 
 
-def console_handler(console_level='DEBUG', console_formatter='%(name)-18s: %(levelname)-8s %(message)s', **kwargs):
+def console_handler(console_level='DEBUG', console_formatter='%(name)-18s: %(levelname)-8s %(message)s', **kwargs) -> logging.StreamHandler:
     console = logging.StreamHandler()
     console.setLevel(getattr(logging, console_level))
     formatter = logging.Formatter(console_formatter)
@@ -104,7 +115,7 @@ def console_handler(console_level='DEBUG', console_formatter='%(name)-18s: %(lev
     return console
 
 
-def get_sub_logger(sub_name, filename=None, **kwargs):
+def get_sub_logger(sub_name: str, filename=None, **kwargs) -> Logger:
     """Same as `get_logger` function but makes sure the logger has package's name for its root"""
     prefix = PKG_NAME_ + '.'
     if sub_name.lower().startswith(prefix.lower()):
@@ -115,7 +126,7 @@ def get_sub_logger(sub_name, filename=None, **kwargs):
     return get_logger(name, filename=filename, **kwargs)
 
 
-def set_level(x: Logger=None, glob=None, logger=None, handlers=None, handler_types: dict=None):
+def set_level(x: Logger=None, glob: _LLT=None, logger: _LLT=None, handlers: _LLT=None, handler_types: dict=None) -> Union[None, Logger]:
     """
     Modify the logging level of `x`
 
@@ -132,7 +143,7 @@ def set_level(x: Logger=None, glob=None, logger=None, handlers=None, handler_typ
     if x is None:
         for x in LOGGERS.values():
             set_level(x, glob=glob, logger=logger, handlers=handlers, handler_types=handler_types)
-            return
+        return
 
     if glob is not None:
         logger = handlers = glob
@@ -176,9 +187,11 @@ class LoggingContext:
         >>>     log2.debug(...)
         >>> log1.info('message with original logger config')
     """
-    def __init__(self, *loggers: Logger, level: (int, str, dict, tuple, list)=None,
-                 handlers: (logging.Handler, tuple, list)=None,
-                 filters: (logging.Filter, str, tuple, list)=None, close: bool=True):
+    def __init__(self, *loggers: Logger, level: _LLCT=None,
+                 handlers: Union[logging.Handler, tuple, list]=None,
+                 filters: Union[logging.Filter, str, tuple, list]=None, close: bool=True):
+        if not loggers:
+            loggers = tuple(LOGGERS.values())
         self.loggers = loggers
         self.level = level
         self.handlers = [handlers] if isinstance(handlers, logging.Handler) else handlers
