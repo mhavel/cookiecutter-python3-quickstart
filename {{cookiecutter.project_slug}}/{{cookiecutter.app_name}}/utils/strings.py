@@ -75,7 +75,7 @@ def hashsum_str(x: Union[str, bytes], algo=None) -> str:
 
 
 class Matcher:
-    def __init__(self, pattern: Union[str, PTYPE], regex: bool=True, regex_flags=None, fullmatch: bool=False):
+    def __init__(self, pattern: Union[str, PTYPE], regex: bool=True, regex_flags=0, fullmatch: bool=False):
         func = None
         if isinstance(pattern, str):
             if regex:
