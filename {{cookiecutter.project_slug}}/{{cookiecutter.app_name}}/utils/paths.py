@@ -6,6 +6,7 @@ Tools to work with Path str / instances.
 """
 
 import os
+from typing import Union
 from pathlib import Path
 import logging
 import shutil
@@ -73,7 +74,7 @@ def relative_to(path: Path, rel: Path = None):
 
 
 def relative_path(p1, p2=None):
-    """return path `p1` relative to `p2`, if if that means starting from /"""
+    """return path `p1` relative to `p2`, if that means starting from /"""
     if p2 is None:
         p2 = Path.cwd()
     else:
@@ -96,7 +97,7 @@ def relative_path(p1, p2=None):
     return rel
 
 
-def filter_paths(paths, pattern: str = None, regex: (str, PTYPE) = None, files=True, directories=True,
+def filter_paths(paths, pattern: str = None, regex: Union[str, PTYPE] = None, files=True, directories=True,
                  case_sensitive=False, on_names=True, exclude=False):
     """filter a sequence of paths according to the given parameters. Case-insensitive"""
     if not files:
@@ -131,7 +132,7 @@ def filter_paths(paths, pattern: str = None, regex: (str, PTYPE) = None, files=T
     return paths
 
 
-def riglob(path: Path, pattern: str = None, regex: (str, PTYPE) = None, files=True, directories=True):
+def riglob(path: Path, pattern: str = None, regex: Union[str, PTYPE] = None, files=True, directories=True):
     """same as Path.rglob method, but instead match on given pattern or regex, case-insensitively, and filtering on
     path type (file and / or directory
     If a compiled regex is provided, the case-sensitivity depends on it.
@@ -139,7 +140,7 @@ def riglob(path: Path, pattern: str = None, regex: (str, PTYPE) = None, files=Tr
     return filter_paths(path.rglob('*'), pattern=pattern, regex=regex, files=files, directories=directories)
 
 
-def iglob(path: Path, pattern: str = None, regex: (str, PTYPE) = None, files=True, directories=True):
+def iglob(path: Path, pattern: str = None, regex: Union[str, PTYPE] = None, files=True, directories=True):
     """same as Path.glob method, but instead match on given pattern or regex, case-insensitively, and filtering on
     path type (file and / or directory)
     If a compiled regex is provided, the case-sensitivity depends on it.
@@ -199,6 +200,11 @@ def ensure_file(path, name=None, ext=None, mkdir=False, absolute=True):
         return p.resolve()
     else:
         return p
+
+def ensure_parent(path: Union[str, Path], parents=True):
+    p = Path(path).expanduser().absolute().parent
+    if not p.is_dir():
+        p.mkdir(parents=parents)
 
 
 def copy(path, new_path):
