@@ -9,9 +9,9 @@ import pickle
 
 
 class PickleProtocol:
-    def __init__(self, level):
+    def __init__(self, level: int):
         self.previous = pickle.HIGHEST_PROTOCOL
-        self.level = level
+        self.level = level or self.previous
 
     def __enter__(self):
         importlib.reload(pickle)
