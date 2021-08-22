@@ -449,6 +449,20 @@ def unique_na_reducer(s=None):
     return reducer
 
 
+def set_reducer(s=None, sort: bool=True):
+    if sort:
+        _2l = sorted
+    else:
+        _2l = list
+    if s is None:
+        def reducer(x: pd.Series):
+            u = _2l(x.loc[x.notnull()].unique())
+            return u
+    else:
+        u = _2l(s.loc[s.notnull()].unique())
+        reducer = constant_reducer(u)
+    return reducer
+
 
 def preferred_or_most_common_reducer(preferred: list, s=None, warn=False):
     if s is None:
