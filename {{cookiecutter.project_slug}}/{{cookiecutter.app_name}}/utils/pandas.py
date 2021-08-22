@@ -6,7 +6,7 @@ Tools to manipulate data
 
 from collections import Counter
 from functools import partial
-from typing import Union
+from typing import Union, List
 import pandas as pd
 import numpy as np
 
