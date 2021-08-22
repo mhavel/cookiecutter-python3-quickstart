@@ -653,6 +653,46 @@ def _identity(x):
     return x
 
 
+def gb_itergroup(x: Union[pd.DataFrame, pd.core.groupby.generic.DataFrameGroupBy], by: Union[str, List[str]]=None):
+    """
+    Given a DataFrame or a DataFrameGroupBy, for each group, yield group value(s) and dataframe's index values
+    """
+    if isinstance(x, pd.DataFrame):
+        assert by is not None
+        gb = x.groupby(by)
+    else:
+        assert isinstance(x, pd.core.groupby.generic.DataFrameGroupBy)
+        gb = x
+    
+    for g, idx in gb.groups.items():
+        yield g, idx
+
+
+def gb_iterdf(x: pd.DataFrame, by: Union[str, List[str]]):
+    """
+    Given a DataFrame, groupby using `by`, and for each group yield group value(s) and corresponding sub-dataframe
+    """
+    gb = x.groupby(by)
+    
+    for g, idx in gb.groups.items():
+        yield g, x.loc[idx]
+
+
+def gb_itertuples_gen(x: pd.DataFrame, by: Union[str, List[str]]):
+    """
+    Given a DataFrame or a DataFrameGroupBy, for each group yield group value(s) and a generator of row tuples
+    (similar to what `DataFrame.itertuples` would return)
+
+    Therefore, to go to the row level, one would use this function as below:
+
+    >>> for g, gen in gb_itertuples_gen(x, by='column_name'):
+    >>>     for row in gen:
+    >>>         # do something with `row`
+    """
+    for g, df in gb_iterdf(x, by):
+        yield g, df.itertuples()
+
+
 class Round:
     def __init__(self, rounding=None, round_before_agg=False, agg='sum', **kw):
         fround = _identity
