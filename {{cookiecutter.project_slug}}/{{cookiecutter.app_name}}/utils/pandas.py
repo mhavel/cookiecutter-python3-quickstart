@@ -96,6 +96,12 @@ def unmelt(df: pd.DataFrame, on, value_cols, id_cols=None, new_cols=None, compre
                                                 if 'default', use default aggregation per type (see `dtypes_agg` in this module)
                                                 else, should be a dict mapping type kind (f, i, b, O) to a function (eg. np.sum) or None
                                                 TODO: this should never be needed! 
+        use_default_agg  (bool=None)            if True, use `agg_new`, `agg_other`, and `agg_num` even is `agg` is provided
+                                                if False, and `agg` is given, ignore `agg_new`, `agg_other` and `agg_num`
+                                                if None (default), becomes False if `agg` is given, True otherwise.
+        agg_new     (str='sum')                 how to aggregate new columns by default
+        agg_other   (str='max')                 how to aggregate non-numerical, original columns, by default
+        agg_num     (str='sum')                 how to aggregate numerical, original columns, by default
         **kw        (dict):                     options
     
     Keyword Arguments:
@@ -148,6 +154,9 @@ def unmelt(df: pd.DataFrame, on, value_cols, id_cols=None, new_cols=None, compre
     default_agg_new = kw.get('agg_new', 'sum')
     default_agg_other = kw.get('agg_other', 'max')
     default_agg_num = kw.get('agg_num', 'sum')
+    use_default_agg = kw.get('use_default_agg', None)
+    if use_default_agg is None:
+        use_default_agg = agg is None
 
     # value aggregation
     if dtype_agg == 'default':
@@ -205,9 +214,16 @@ def unmelt(df: pd.DataFrame, on, value_cols, id_cols=None, new_cols=None, compre
         id_cols = [id_cols]
     else:
         id_cols = list(id_cols)
-    if agg is None:
-        agg = dict({c: default_agg_new for c, n in new.items() if n > 1})
-        agg.update({c: default_agg_other if res[c].dtype.kind not in ('f', 'i') else default_agg_num for c in set(res).difference(agg).difference(id_cols)})
+    # if agg is None:
+    if use_default_agg:
+        _agg = dict({c: default_agg_new for c, n in new.items() if n > 1})
+        _agg.update({c: default_agg_other if res[c].dtype.kind not in ('f', 'i') else default_agg_num for c in set(res).difference(_agg).difference(id_cols)})
+        if agg is None:
+            agg = _agg
+        else:
+            agg = dict(_agg, **agg)
+    elif agg is None:
+        agg = False
     new = sorted(new)
     if not isinstance(agg, bool) and agg != 'max' and keep_ona:
         logger.warning('partial NaN replacement in `unmelt` is only reliable if `agg="max"`: replacing all NaNs')
