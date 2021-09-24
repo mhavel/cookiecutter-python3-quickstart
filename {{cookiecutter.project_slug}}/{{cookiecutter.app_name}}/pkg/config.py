@@ -309,6 +309,9 @@ class PkgConfig:
         except KeyError:
             x = default
         return x
+    
+    def get_(self, key: str, default=None):
+        return self.data.get_(key, default=default)
         
     # -- set --
     def __setitem__(self, item, value):
