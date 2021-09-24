@@ -5,9 +5,12 @@
 Augmented Python base-class, and utils
 """
 
+from typing import Union
+from pathlib import Path
 from copy import deepcopy
 
 from .mapping import dict_deep_update, dict_default, dict_get_first_of, KeyNotFound
+from ..io import json
 
 
 # ============
@@ -356,4 +359,11 @@ class AugmentedDict(dict):
         if names:
             seq = {name: val for name, val in seq if name in names}
         return cls(seq)
+    
+    @classmethod
+    def from_json(cls, path: Union[str, Path], names=None):
+        x = json.read(path)
+        if names:
+            x = {name: val for name, val in x.items() if name in names}
+        return cls(x)
 
